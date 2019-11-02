@@ -18,10 +18,10 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 public final class EntryTransformer {
-    public static final String STYLE_COMPACT = "compact";
-    public static final String STYLE_STRUCTURAL = "structural";
-    public static final String STYLE_TRADITIONAL = "traditional";
-    public static final String STYLE_DEBUG = "debug";
+    static final String STYLE_COMPACT = "compact";
+    static final String STYLE_STRUCTURAL = "structural";
+    static final String STYLE_TRADITIONAL = "traditional";
+    static final String STYLE_DEBUG = "debug";
 
     private static final String XSLT_COMPACT = "xslt/compact.xsl";
     private static final String XSLT_STRUCTURAL = "xslt/structural.xsl";
@@ -71,10 +71,7 @@ public final class EntryTransformer {
             transformer.transform(xmlSource, streamResult);
 
             return stringWriter.toString();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (TransformerException e) {
+        } catch (IOException | TransformerException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }

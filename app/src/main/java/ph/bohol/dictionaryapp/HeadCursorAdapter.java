@@ -17,10 +17,10 @@ import java.lang.ref.WeakReference;
 
 class HeadCursorAdapter extends CursorAdapter {
     private final LayoutInflater layoutInflater;
-    private boolean showPreview = false;
+    private boolean showPreview;
 
     @SuppressWarnings("deprecation")
-    public HeadCursorAdapter(final Context context, final Cursor cursor) {
+    HeadCursorAdapter(final Context context, final Cursor cursor) {
         super(context, cursor);
         layoutInflater = LayoutInflater.from(context);
 
@@ -37,7 +37,7 @@ class HeadCursorAdapter extends CursorAdapter {
             head += " (" + derivation + ")";
         }
 
-        TextView textview = (TextView) view.findViewById(R.id.head);
+        TextView textview = view.findViewById(R.id.head);
         textview.setText(head);
 
         String entryIdString = cursor.getString(cursor.getColumnIndex(DictionaryDatabase.HEAD_ENTRY_ID));
@@ -45,7 +45,7 @@ class HeadCursorAdapter extends CursorAdapter {
 
         if (showPreview) {
             // Loading a preview of an entry is a slow operation, so don't do it on the UI thread.
-            TextView detailTextView = (TextView) view.findViewById(R.id.details);
+            TextView detailTextView = view.findViewById(R.id.details);
             detailTextView.setText("");
             FetchEntryDetailsTask task = new FetchEntryDetailsTask(context, detailTextView);
             task.execute(entryId);
@@ -53,7 +53,7 @@ class HeadCursorAdapter extends CursorAdapter {
             // Show the match-type using an icon, only if an imageView is in the view.
             String type = cursor.getString(cursor.getColumnIndexOrThrow(DictionaryDatabase.HEAD_TYPE));
             if (type != null) {
-                ImageView imageView = (ImageView) view.findViewById(R.id.icon);
+                ImageView imageView = view.findViewById(R.id.icon);
                 if (imageView != null) {
                     if (type.equals("d")) {
                         imageView.setImageResource(R.drawable.ic_tilde);
@@ -90,7 +90,7 @@ class HeadCursorAdapter extends CursorAdapter {
 
         FetchEntryDetailsTask(final Context newContext, final TextView detailTextView) {
             this.context = newContext;
-            this.detailTextViewReference = new WeakReference<TextView>(detailTextView);
+            this.detailTextViewReference = new WeakReference<>(detailTextView);
 
             // Are we already working for this TextView? (And the ListView re-used it during scrolling)
             if (detailTextView.getTag() instanceof FetchEntryDetailsTask) {

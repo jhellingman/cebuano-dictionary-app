@@ -77,14 +77,14 @@ public final class DictionaryDatabase extends SQLiteAssetHelper
      * @return A SQL string having all sub-queries combined.
      */
     private static String unionize(final List<String> queries) {
-        String result = "";
+        StringBuilder result = new StringBuilder();
         for (String query : queries) {
-            if (!result.isEmpty()) {
-                result += " UNION ";
+            if (result.length() > 0) {
+                result.append(" UNION ");
             }
-            result += query;
+            result.append(query);
         }
-        return result;
+        return result.toString();
     }
 
     @Override
@@ -248,15 +248,12 @@ public final class DictionaryDatabase extends SQLiteAssetHelper
         String[] selectionArguments = {Integer.toString(entryId)};
 
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(sqlQuery, selectionArguments);
-        try {
+        try (Cursor cursor = db.rawQuery(sqlQuery, selectionArguments)) {
             if (cursor.getCount() == 0) {
                 return entryId;
             }
             cursor.moveToFirst();
             return cursor.getInt(cursor.getColumnIndex(ENTRY_ID));
-        } finally {
-            cursor.close();
         }
     }
 }

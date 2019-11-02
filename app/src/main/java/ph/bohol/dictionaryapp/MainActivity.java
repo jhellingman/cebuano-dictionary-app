@@ -131,13 +131,13 @@ public class MainActivity extends Activity
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         reverseLookup = preferences.getBoolean(DictionaryPreferenceActivity.KEY_REVERSE_LOOKUP, false);
         useStemming = preferences.getBoolean(DictionaryPreferenceActivity.KEY_USE_STEMMING, false);
-        lastSearchWord = preferences.getString(DictionaryPreferenceActivity.KEY_LAST_SEARCHWORD, "");
+        lastSearchWord = preferences.getString(DictionaryPreferenceActivity.KEY_LAST_SEARCH_WORD, "");
     }
 
     private void saveSearchWord() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(DictionaryPreferenceActivity.KEY_LAST_SEARCHWORD, searchWord);
+        editor.putString(DictionaryPreferenceActivity.KEY_LAST_SEARCH_WORD, searchWord);
         editor.commit();
     }
 

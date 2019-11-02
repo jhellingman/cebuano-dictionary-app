@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 17
-    buildToolsVersion "21.1.2"
+    compileSdkVersion 28
+    buildToolsVersion '28.0.3'
 
     defaultConfig {
         applicationId "ph.bohol.dictionaryapp"
-        minSdkVersion 11
-        targetSdkVersion 17
+        minSdkVersion 19
+        targetSdkVersion 28
     }
 
     buildTypes {
@@ -16,10 +16,14 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:18.0.0'
-    compile 'com.readystatesoftware.sqliteasset:sqliteassethelper:+'
-    compile project(':stemmer')
+    api 'com.android.support:support-v4:28.0.0'
+    api 'com.readystatesoftware.sqliteasset:sqliteassethelper:2.0.1'
+    implementation project(':stemmer')
 }

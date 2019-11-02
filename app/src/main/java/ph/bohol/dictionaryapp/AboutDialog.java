@@ -26,7 +26,7 @@ class AboutDialog extends Dialog {
      *
      * @param newContext the context to be used.
      */
-    public AboutDialog(final Context newContext) {
+    AboutDialog(final Context newContext) {
         super(newContext);
         AboutDialog.context = newContext;
     }
@@ -51,11 +51,7 @@ class AboutDialog extends Dialog {
     @Override
     public final void onCreate(final Bundle savedInstanceState) {
         setContentView(R.layout.about_dialog);
-
-        // TextView textView = (TextView) findViewById(R.id.legal_text);
-        // textView.setText(readRawTextFile(R.raw.legal));
-
-        TextView textView = (TextView) findViewById(R.id.info_text);
+        TextView textView = findViewById(R.id.info_text);
         textView.setText(Html.fromHtml(readRawTextFile(R.raw.about)));
         textView.setLinkTextColor(Color.WHITE);
         Linkify.addLinks(textView, Linkify.ALL);
