@@ -14,7 +14,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.webkit.WebView;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SearchView;
 
@@ -57,8 +56,8 @@ public class MainActivity extends Activity
         retrievePreferences();
         intializeStemmer();
 
-        listView = (ListView) findViewById(R.id.listview);
-        webView = (WebView) findViewById(R.id.webview);
+        listView = findViewById(R.id.listview);
+        webView = findViewById(R.id.webview);
 
         // Get searchWord after resume (e.g. after a rotation).
         if (savedInstanceState != null) {
@@ -113,17 +112,14 @@ public class MainActivity extends Activity
         HeadCursorAdapter h = new HeadCursorAdapter(this, cursor);
         listView.setAdapter(h);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(final AdapterView<?> parent, final View view, final int position, final long id) {
-                cursor.moveToPosition(position);
-                String entryId = cursor.getString(cursor.getColumnIndex(DictionaryDatabase.HEAD_ENTRY_ID));
+        listView.setOnItemClickListener((parent, view, position, id) -> {
+            cursor.moveToPosition(position);
+            String entryId = cursor.getString(cursor.getColumnIndex(DictionaryDatabase.HEAD_ENTRY_ID));
 
-                // Result will be search word if cross-reference is followed.
-                Intent intent = new Intent(MainActivity.this, ShowEntryActivity.class);
-                intent.putExtra(ENTRY_ID, entryId);
-                startActivityForResult(intent, RESULT_SHOW_ENTRY);
-            }
+            // Result will be search word if cross-reference is followed.
+            Intent intent = new Intent(MainActivity.this, ShowEntryActivity.class);
+            intent.putExtra(ENTRY_ID, entryId);
+            startActivityForResult(intent, RESULT_SHOW_ENTRY);
         });
     }
 
@@ -138,7 +134,7 @@ public class MainActivity extends Activity
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString(DictionaryPreferenceActivity.KEY_LAST_SEARCH_WORD, searchWord);
-        editor.commit();
+        editor.apply();
     }
 
     private void intializeStemmer() {

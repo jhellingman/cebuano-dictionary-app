@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string-array name="presentationStyleOptions">
         <item>@string/presentation_compact</item>
         <item>@string/presentation_structural</item>
@@ -13,7 +12,6 @@
         <item>traditional</item>
         <item>debug</item>
     </string-array>
-
     <string-array name="fontSizeOptions">
         <item>@string/fontsize_tiny</item>
         <item>@string/fontsize_small</item>
@@ -26,8 +24,7 @@
         <item>20</item>
         <item>24</item>
     </string-array>
-    
-        <string-array name="measureOptions">
+    <string-array name="measureOptions">
         <item>@string/measure_original</item>
         <item>@string/measure_metric</item>
     </string-array>
@@ -35,5 +32,4 @@
         <item>original</item>
         <item>metric</item>
     </string-array>
-    
 </resources>

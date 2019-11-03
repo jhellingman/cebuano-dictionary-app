@@ -25,7 +25,7 @@ class HeadCursorAdapter extends CursorAdapter {
         layoutInflater = LayoutInflater.from(context);
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        showPreview = preferences.getBoolean("show_preview", false);
+        showPreview = preferences.getBoolean("show_preview", true);
     }
 
     @Override
@@ -83,8 +83,7 @@ class HeadCursorAdapter extends CursorAdapter {
     // http://www.vogella.com/articles/AndroidBackgroundProcessing/article.html
     // http://stackoverflow.com/questions/8965771/android-asynctask-update-to-the-listview-in-postexecute
     // http://android-developers.blogspot.nl/2010/07/multithreading-for-performance.html
-    private class FetchEntryDetailsTask extends
-            AsyncTask<Integer, Void, Spanned> {
+    private class FetchEntryDetailsTask extends AsyncTask<Integer, Void, Spanned> {
         private final Context context;
         private final WeakReference<TextView> detailTextViewReference;
 

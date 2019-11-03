@@ -53,11 +53,7 @@ public class ShowEntryActivity extends Activity
         setupActionBar();
 
         gestureDetector = new GestureDetector(this, new MyGestureDetector());
-        gestureListener = new View.OnTouchListener() {
-            public boolean onTouch(final View view, final MotionEvent event) {
-                return gestureDetector.onTouchEvent(event);
-            }
-        };
+        gestureListener = (view, event) -> gestureDetector.onTouchEvent(event);
 
         retrievePreferences();
 
@@ -80,8 +76,7 @@ public class ShowEntryActivity extends Activity
 
     private void showEntry() {
         DictionaryDatabase database = DictionaryDatabase.getInstance(this);
-        Cursor cursor = database.getEntry(entryId);
-        try {
+        try (Cursor cursor = database.getEntry(entryId)) {
             String entry = cursor.getString(cursor.getColumnIndex(DictionaryDatabase.ENTRY_ENTRY));
             String head = cursor.getString(cursor.getColumnIndex(DictionaryDatabase.ENTRY_HEAD));
             setTitle(head);
@@ -117,8 +112,6 @@ public class ShowEntryActivity extends Activity
                     webView.setOnTouchListener(gestureListener);
                 }
             }
-        } finally {
-            cursor.close();
         }
     }
 
@@ -240,13 +233,9 @@ public class ShowEntryActivity extends Activity
             return;
         }
 
-        switch (requestCode) {
-            case RESULT_SETTINGS:
-                retrievePreferences();
-                showEntry();
-                break;
-            default:
-                break;
+        if (requestCode == RESULT_SETTINGS) {
+            retrievePreferences();
+            showEntry();
         }
     }
 

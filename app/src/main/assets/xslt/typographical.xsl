@@ -68,17 +68,17 @@
 
         <xsl:choose>
             <xsl:when test="$page = '537a'">
-                <xsl:sequence select="'http://seapdatapapers.library.cornell.edu/cgi/t/text/pageviewer-idx?c=seap&amp;cc=seap&amp;idno=seap085b&amp;node=seap085b%3A11&amp;view=image&amp;seq=7&amp;size=200'"/>
+                <xsl:sequence select="'https://seapdatapapers.library.cornell.edu/cgi/t/text/pageviewer-idx?c=seap&amp;cc=seap&amp;idno=seap085b&amp;node=seap085b%3A11&amp;view=image&amp;seq=7&amp;size=200'"/>
             </xsl:when>
             <xsl:when test="$pageNumber &lt; 538">
                 <xsl:sequence select="concat(concat(
-                    'http://seapdatapapers.library.cornell.edu/cgi/t/text/pageviewer-idx?c=seap&amp;cc=seap&amp;idno=seap085a&amp;node=seap085a%3A11&amp;view=image&amp;seq=', 
+                    'https://seapdatapapers.library.cornell.edu/cgi/t/text/pageviewer-idx?c=seap&amp;cc=seap&amp;idno=seap085a&amp;node=seap085a%3A11&amp;view=image&amp;seq=',
                     $pageNumber + 24),
                     '&amp;size=200')"/>
             </xsl:when>
             <xsl:when test="$pageNumber &gt; 537">
                 <xsl:sequence select="concat(concat(
-                    'http://seapdatapapers.library.cornell.edu/cgi/t/text/pageviewer-idx?c=seap&amp;cc=seap&amp;idno=seap085b&amp;node=seap085b%3A11&amp;view=image&amp;seq=', 
+                    'https://seapdatapapers.library.cornell.edu/cgi/t/text/pageviewer-idx?c=seap&amp;cc=seap&amp;idno=seap085b&amp;node=seap085b%3A11&amp;view=image&amp;seq=',
                     $pageNumber - 530),
                     '&amp;size=200')"/>
             </xsl:when>
@@ -178,7 +178,7 @@
     <xsl:template match="bio">
         <span class="bio">
             <a>
-                <xsl:attribute name="href">http://www.google.com/search?q=<xsl:value-of select="translate(., ' ', '+')"/></xsl:attribute>
+                <xsl:attribute name="href">https://www.google.com/search?q=<xsl:value-of select="translate(., ' ', '+')"/></xsl:attribute>
                 <xsl:apply-templates/>
             </a>
         </span>

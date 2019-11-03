@@ -32,8 +32,8 @@ public final class EntryTransformer {
     private int fontSize = DEFAULT_FONT_SIZE;
     private static final String TAG = "EntryTransformer";
     private static EntryTransformer instance = null;
-    private final Map<String, String> stylesheets = new HashMap<String, String>();
-    private final Map<String, Transformer> transformers = new HashMap<String, Transformer>();
+    private final Map<String, String> stylesheets = new HashMap<>();
+    private final Map<String, Transformer> transformers = new HashMap<>();
     private boolean expandAbbreviations = false;
     private boolean useMetric = false;
 
@@ -48,7 +48,7 @@ public final class EntryTransformer {
         this.stylesheets.put(STYLE_DEBUG, XSLT_DEBUG);
     }
 
-    public static EntryTransformer getInstance(final Context context) {
+    static EntryTransformer getInstance(final Context context) {
         // Use the application context, which will ensure that you do not accidentally leak an Activity's context.
         // See this article for more information: http://bit.ly/6LRzfx
         if (instance == null) {
@@ -58,7 +58,7 @@ public final class EntryTransformer {
         return instance;
     }
 
-    public String transform(final String entry, final String presentationStyle) {
+    String transform(final String entry, final String presentationStyle) {
         try {
             Transformer transformer = getTransformer(presentationStyle);
 
@@ -112,7 +112,7 @@ public final class EntryTransformer {
         return expandAbbreviations;
     }
 
-    public void setExpandAbbreviations(final boolean newExpandAbbreviations) {
+    void setExpandAbbreviations(final boolean newExpandAbbreviations) {
         this.expandAbbreviations = newExpandAbbreviations;
     }
 
@@ -120,7 +120,7 @@ public final class EntryTransformer {
         return useMetric;
     }
 
-    public void setUseMetric(final boolean newUseMetric) {
+    void setUseMetric(final boolean newUseMetric) {
         this.useMetric = newUseMetric;
     }
 
@@ -128,7 +128,7 @@ public final class EntryTransformer {
         return fontSize;
     }
 
-    public void setFontSize(final int newFontSize) {
+    void setFontSize(final int newFontSize) {
         this.fontSize = newFontSize;
     }
 }

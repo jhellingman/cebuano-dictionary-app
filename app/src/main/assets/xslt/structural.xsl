@@ -168,7 +168,7 @@
     <xsl:template match="bio">
         <span class="bio">
             <a>
-                <xsl:attribute name="href">http://www.google.com/search?q=<xsl:value-of select="translate(., ' ', '+')"/></xsl:attribute>
+                <xsl:attribute name="href">https://www.google.com/search?q=<xsl:value-of select="translate(., ' ', '+')"/></xsl:attribute>
                 <xsl:apply-templates/>
             </a>
         </span>

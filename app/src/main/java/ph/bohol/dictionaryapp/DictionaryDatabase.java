@@ -59,7 +59,7 @@ public final class DictionaryDatabase extends SQLiteAssetHelper
      * @param context a context. The application context will be obtained from this context.
      * @return the instance of the DictionaryDatabase singleton.
      */
-    public static DictionaryDatabase getInstance(final Context context) {
+    static DictionaryDatabase getInstance(final Context context) {
         // Use the application context, which will ensure that you do not accidentally leak an Activity's context.
         // See this article for more information: http://bit.ly/6LRzfx
         if (instance == null) {
@@ -102,13 +102,10 @@ public final class DictionaryDatabase extends SQLiteAssetHelper
         String sqlQuery = "SELECT 1 FROM WCED_head WHERE normalized_head = ? AND pos != '' LIMIT 1";
         String[] selectionArguments = {root};
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(sqlQuery, selectionArguments);
-        try {
+        try (Cursor cursor = db.rawQuery(sqlQuery, selectionArguments)) {
             boolean result = cursor.getCount() > 0;
             rootCache.put(root, result);
             return result;
-        } finally {
-            cursor.close();
         }
     }
 
@@ -127,22 +124,19 @@ public final class DictionaryDatabase extends SQLiteAssetHelper
         String sqlQuery = "SELECT 1 FROM WCED_head WHERE normalized_head = ? AND pos LIKE ? LIMIT 1";
         String[] selectionArguments = {root, "%" + type + "%"};
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(sqlQuery, selectionArguments);
-        try {
+        try (Cursor cursor = db.rawQuery(sqlQuery, selectionArguments)) {
             boolean result = cursor.getCount() > 0;
             rootCache.put(root + "." + type, result);
             return result;
-        } finally {
-            cursor.close();
         }
     }
 
-    public Cursor getHeads(final String head, final boolean reverseLookup, final List<Derivation> derivations) {
+    Cursor getHeads(final String head, final boolean reverseLookup, final List<Derivation> derivations) {
         CebuanoNormalizer n = new CebuanoNormalizer();
         String normalizedHead = n.normalize(head);
 
-        List<String> subQueries = new LinkedList<String>();
-        List<String> arguments = new ArrayList<String>();
+        List<String> subQueries = new LinkedList<>();
+        List<String> arguments = new ArrayList<>();
 
         subQueries.add("SELECT _id, entryid, head, normalized_head, NULL AS derivation, 'n' AS type "
                 + "FROM WCED_head WHERE normalized_head LIKE ?");
@@ -180,7 +174,7 @@ public final class DictionaryDatabase extends SQLiteAssetHelper
         return db.rawQuery(query, selectionArguments);
     }
 
-    public Cursor getEntry(final int entryId) {
+    Cursor getEntry(final int entryId) {
         String sqlQuery = "SELECT * FROM WCED_entry WHERE _id = ?";
         String[] selectionArguments = {Integer.toString(entryId)};
         SQLiteDatabase db = this.getWritableDatabase();
@@ -202,10 +196,10 @@ public final class DictionaryDatabase extends SQLiteAssetHelper
      * @param entryId The entryId for which the rich-text is wanted.
      * @return a Spanned object with the content of the entry.
      */
-    public Spanned getEntrySpanned(final int entryId) {
+    Spanned getEntrySpanned(final int entryId) {
         Spanned entrySpanned = entryCache.get(entryId);
         if (entrySpanned == null) {
-            Log.d(TAG, "Getting entry rendered in Spanned for entryId: " + Integer.toString(entryId));
+            Log.d(TAG, "Getting entry rendered in Spanned for entryId: " + entryId);
 
             String entryHtml = getEntryHtml(entryId);
             entrySpanned = Html.fromHtml(entryHtml);
@@ -220,20 +214,17 @@ public final class DictionaryDatabase extends SQLiteAssetHelper
      * @param entryId The entryId of which the next entry is sought.
      * @return the next entryId, or the original entryId if this entry is the last.
      */
-    public int getNextEntryId(final int entryId) {
+    int getNextEntryId(final int entryId) {
         String sqlQuery = "SELECT _id FROM WCED_entry WHERE _id > ? ORDER BY _id LIMIT 1";
         String[] selectionArguments = {Integer.toString(entryId)};
 
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(sqlQuery, selectionArguments);
-        try {
+        try (Cursor cursor = db.rawQuery(sqlQuery, selectionArguments)) {
             if (cursor.getCount() == 0) {
                 return entryId;
             }
             cursor.moveToFirst();
             return cursor.getInt(cursor.getColumnIndex(ENTRY_ID));
-        } finally {
-            cursor.close();
         }
     }
 
@@ -243,7 +234,7 @@ public final class DictionaryDatabase extends SQLiteAssetHelper
      * @param entryId The entryId of which the previous entry is sought.
      * @return the previous entryId, or the original entryId if this entry is the first.
      */
-    public int getPreviousEntryId(final int entryId) {
+    int getPreviousEntryId(final int entryId) {
         String sqlQuery = "SELECT _id FROM WCED_entry WHERE _id < ? ORDER BY _id DESC LIMIT 1";
         String[] selectionArguments = {Integer.toString(entryId)};
 
