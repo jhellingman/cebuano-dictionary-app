@@ -2,11 +2,7 @@
 
 <xsl:stylesheet
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-    xmlns:xs="http://www.w3.org/2001/XMLSchema"
-    xmlns:dc="http://purl.org/dc/elements/1.1/"
-    xmlns:local="http://localhost"
-    version="2.0"
-    exclude-result-prefixes="xs dc">
+    version="2.0">
 
     <xsl:output 
         method="html" 
@@ -190,7 +186,7 @@
                 <xsl:when test="@target">
                     <a class="search">
                         <xsl:attribute name="href">
-                            <!-- TODO: hack to remove x and q encoding present in files. -->
+                            <!-- Remove x and q encoding present in files. -->
                             <xsl:text>search:</xsl:text><xsl:value-of select="substring-after(translate(@target, 'xq1234567890', ''), '#')"/>
                         </xsl:attribute>
                         <xsl:apply-templates />
@@ -270,10 +266,8 @@
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
-    
-    
-    <!-- Discard unwanted stuff -->
 
+    <!-- Discard unwanted stuff -->
     <xsl:template match="TEI.2|text|body|trans|div1|sc|corr|head|foreign|back|divGen|sic">
         <xsl:apply-templates/>
     </xsl:template>

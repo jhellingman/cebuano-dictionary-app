@@ -5,7 +5,11 @@ import java.util.Map;
 
 class AffixGroup {
     private String name;
-    private final LinkedList<Affix> affixes = new LinkedList<Affix>();
+    private final LinkedList<Affix> affixes;
+
+    AffixGroup() {
+        affixes = new LinkedList<>();
+    }
 
     final void addAffix(final Affix pattern) {
         affixes.addLast(pattern);
@@ -22,16 +26,15 @@ class AffixGroup {
     }
 
     public final String toString() {
-        String result = "\n<group name='" + name + "'>\n";
-
+        StringBuilder result = new StringBuilder("\n<group name='" + name + "'>\n");
         for (Affix affix : affixes) {
-            result += affix.toString();
+            result.append(affix.toString());
         }
-        result += ("</group>\n");
-        return result;
+        result.append("</group>\n");
+        return result.toString();
     }
 
-    public final LinkedList<Affix> getAffixes() {
+    final LinkedList<Affix> getAffixes() {
         return affixes;
     }
 }

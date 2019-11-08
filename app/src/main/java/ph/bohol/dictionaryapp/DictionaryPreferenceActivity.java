@@ -73,15 +73,15 @@ public class DictionaryPreferenceActivity extends PreferenceActivity
 
     private String fontSizeToText(final String fontSize) {
         if (fontSize.equalsIgnoreCase("12")) {
-            return getString(R.string.fontsize_tiny);
+            return getString(R.string.font_size_tiny);
         }
         if (fontSize.equalsIgnoreCase("16")) {
-            return getString(R.string.fontsize_small);
+            return getString(R.string.font_size_small);
         }
         if (fontSize.equalsIgnoreCase("24")) {
-            return getString(R.string.fontsize_large);
+            return getString(R.string.font_size_large);
         }
-        return getString(R.string.fontsize_medium);
+        return getString(R.string.font_size_medium);
     }
 
     private String measureUnitToText(final String measureUnit) {

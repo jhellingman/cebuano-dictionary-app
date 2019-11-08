@@ -13,10 +13,10 @@
         <item>debug</item>
     </string-array>
     <string-array name="fontSizeOptions">
-        <item>@string/fontsize_tiny</item>
-        <item>@string/fontsize_small</item>
-        <item>@string/fontsize_medium</item>
-        <item>@string/fontsize_large</item>
+        <item>@string/font_size_tiny</item>
+        <item>@string/font_size_small</item>
+        <item>@string/font_size_medium</item>
+        <item>@string/font_size_large</item>
     </string-array>
     <string-array name="fontSizeValues">
         <item>12</item>

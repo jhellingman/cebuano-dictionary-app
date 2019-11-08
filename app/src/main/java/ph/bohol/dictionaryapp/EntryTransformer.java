@@ -18,6 +18,10 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 public final class EntryTransformer {
+
+    private static final String TAG = "EntryTransformer";
+    private static EntryTransformer instance = null;
+
     static final String STYLE_COMPACT = "compact";
     static final String STYLE_STRUCTURAL = "structural";
     static final String STYLE_TRADITIONAL = "traditional";
@@ -28,12 +32,12 @@ public final class EntryTransformer {
     private static final String XSLT_TRADITIONAL = "xslt/typographical.xsl";
     private static final String XSLT_DEBUG = "xslt/debug.xsl";
 
-    private static final int DEFAULT_FONT_SIZE = 20;
-    private int fontSize = DEFAULT_FONT_SIZE;
-    private static final String TAG = "EntryTransformer";
-    private static EntryTransformer instance = null;
     private final Map<String, String> stylesheets = new HashMap<>();
     private final Map<String, Transformer> transformers = new HashMap<>();
+
+    private static final int DEFAULT_FONT_SIZE = 20;
+
+    private int fontSize = DEFAULT_FONT_SIZE;
     private boolean expandAbbreviations = false;
     private boolean useMetric = false;
 

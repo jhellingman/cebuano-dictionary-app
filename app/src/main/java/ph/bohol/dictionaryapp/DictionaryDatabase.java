@@ -21,15 +21,18 @@ import ph.bohol.util.stemmer.RootWordProvider;
 
 public final class DictionaryDatabase extends SQLiteAssetHelper
         implements RootWordProvider {
+
     public static final String HEAD_ID = "_id";
-    public static final String HEAD_HEAD = "head";
     public static final String HEAD_NORMALIZED_HEAD = "normalized_head";
-    public static final String HEAD_ENTRY_ID = "entryid";
-    public static final String HEAD_DERIVATION = "derivation";
-    public static final String HEAD_TYPE = "type";
+
+    static final String HEAD_HEAD = "head";
+    static final String HEAD_ENTRY_ID = "entryid";
+    static final String HEAD_DERIVATION = "derivation";
+    static final String HEAD_TYPE = "type";
+    static final String ENTRY_ENTRY = "entry";
+    static final String ENTRY_HEAD = "head";
+
     private static final String ENTRY_ID = "_id";
-    public static final String ENTRY_ENTRY = "entry";
-    public static final String ENTRY_HEAD = "head";
     private static final int MIN_ROOT_LENGTH = 3;
     private static final String DATABASE_NAME = "dictionary_database";
     private static final int DATABASE_VERSION = 1;

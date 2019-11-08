@@ -2,11 +2,7 @@
 
 <xsl:stylesheet
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-    xmlns:xs="http://www.w3.org/2001/XMLSchema"
-    xmlns:dc="http://purl.org/dc/elements/1.1/"
-    xmlns:local="http://localhost"
-    version="2.0"
-    exclude-result-prefixes="xs dc">
+    version="2.0">
 
     <xsl:output 
         method="html" 
@@ -62,38 +58,7 @@
         </html>
     </xsl:template>
 
-    <xsl:function name="local:get-page-url" as="xs:string">
-        <xsl:param name="page" as="xs:string"/>
-        <xsl:variable name="pageNumber" select="number($page)"/>
-
-        <xsl:choose>
-            <xsl:when test="$page = '537a'">
-                <xsl:sequence select="'https://seapdatapapers.library.cornell.edu/cgi/t/text/pageviewer-idx?c=seap&amp;cc=seap&amp;idno=seap085b&amp;node=seap085b%3A11&amp;view=image&amp;seq=7&amp;size=200'"/>
-            </xsl:when>
-            <xsl:when test="$pageNumber &lt; 538">
-                <xsl:sequence select="concat(concat(
-                    'https://seapdatapapers.library.cornell.edu/cgi/t/text/pageviewer-idx?c=seap&amp;cc=seap&amp;idno=seap085a&amp;node=seap085a%3A11&amp;view=image&amp;seq=',
-                    $pageNumber + 24),
-                    '&amp;size=200')"/>
-            </xsl:when>
-            <xsl:when test="$pageNumber &gt; 537">
-                <xsl:sequence select="concat(concat(
-                    'https://seapdatapapers.library.cornell.edu/cgi/t/text/pageviewer-idx?c=seap&amp;cc=seap&amp;idno=seap085b&amp;node=seap085b%3A11&amp;view=image&amp;seq=',
-                    $pageNumber - 530),
-                    '&amp;size=200')"/>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:text></xsl:text>
-            </xsl:otherwise>
-        </xsl:choose>
-    </xsl:function>
-
     <xsl:template match="entry">
-        <!-- 
-            <xsl:if test="parent::dictionary">
-                <div class="page-ref"><a href="{local:get-page-url(@page)}"><xsl:value-of select="@page"/></a></div>
-            </xsl:if>
-        -->
         <span class="entry">
             <xsl:apply-templates/>
         </span>
@@ -200,7 +165,7 @@
                 <xsl:when test="@target">
                     <a class="search">
                         <xsl:attribute name="href">
-                            <!-- TODO: hack to remove x and q encoding present in files. -->
+                            <!-- Remove x and q encoding present in files. -->
                             <xsl:text>search:</xsl:text><xsl:value-of select="substring-after(translate(@target, 'xq1234567890', ''), '#')"/>
                         </xsl:attribute>
                         <xsl:apply-templates />
@@ -282,7 +247,6 @@
     </xsl:template>
     
     <!-- Discard unwanted stuff -->
-
     <xsl:template match="TEI.2|text|body|trans|div1|sc|corr|head|foreign|back|divGen|sic">
         <xsl:apply-templates/>
     </xsl:template>

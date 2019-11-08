@@ -2,11 +2,7 @@
 
 <xsl:stylesheet
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-    xmlns:xs="http://www.w3.org/2001/XMLSchema"
-    xmlns:dc="http://purl.org/dc/elements/1.1/"
-    xmlns:local="http://localhost"
-    version="2.0"
-    exclude-result-prefixes="xs dc">
+    version="2.0">
 
     <xsl:output 
         method="html" 
@@ -62,7 +58,7 @@
         </span>
     </xsl:template>
 
-    <!--  We drop all examples in the compact presentation, and are also not interested in the verb codes -->
+    <!--  Drop examples and verb codes in the compact presentation. -->
     <xsl:template match="eg | itype | pb"/>
 
     <xsl:template match="abbr">

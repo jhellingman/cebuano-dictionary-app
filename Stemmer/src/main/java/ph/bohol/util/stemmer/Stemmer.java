@@ -10,8 +10,8 @@ import java.util.Vector;
 public class Stemmer {
     private String language;
     private boolean compiled = false;
-    private final Map<String, String> constants = new HashMap<String, String>();
-    private final Vector<AffixGroup> groups = new Vector<AffixGroup>();
+    private final Map<String, String> constants = new HashMap<>();
+    private final Vector<AffixGroup> groups = new Vector<>();
     private RootWordProvider rootWordProvider = null;
 
     final void addGroup(final AffixGroup group) {
@@ -34,7 +34,7 @@ public class Stemmer {
         if (!compiled) {
             compile();
         }
-        Set<String> roots = new HashSet<String>();
+        Set<String> roots = new HashSet<>();
         return innerFindDerivations(word, roots, 0);
     }
 
@@ -42,7 +42,7 @@ public class Stemmer {
     private LinkedList<Derivation> innerFindDerivations(final String word, final Set<String> roots, final int level) {
         LinkedList<Derivation> derivations;
         if (groups.size() <= level) {
-            derivations = new LinkedList<Derivation>();
+            derivations = new LinkedList<>();
             if (!roots.contains(word) && isRootWord(word)) {
                 Derivation derivation = new Derivation(word);
                 derivations.add(derivation);
@@ -90,18 +90,21 @@ public class Stemmer {
     }
 
     public final String toString() {
-        String result = "<stemmer language='" + language + "'>";
+        StringBuilder result = new StringBuilder("<stemmer language='" + language + "'>");
 
         for (String key : constants.keySet()) {
-            String value = constants.get(key);
-            result += "\n<constant name='" + key + "' value='" + value + "'/>";
+            result.append("\n<constant name='")
+                    .append(key)
+                    .append("' value='")
+                    .append(constants.get(key))
+                    .append("'/>");
         }
 
         for (AffixGroup group : groups) {
-            result += group.toString();
+            result.append(group.toString());
         }
 
-        return result + "</stemmer>\n";
+        return result.append("</stemmer>\n").toString();
     }
 
     public final RootWordProvider getRootProvider() {

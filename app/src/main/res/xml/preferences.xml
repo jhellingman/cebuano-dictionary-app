@@ -3,7 +3,7 @@
 
     <PreferenceCategory
         android:summary="@string/search_summary"
-        android:title="@string/search" >
+        android:title="@string/search">
         
         <ListPreference
             android:entries="@array/fontSizeOptions"
@@ -11,8 +11,7 @@
             android:key="search_font_size"
             android:summary="@string/font_size_summary_for_search"
             android:title="@string/font_size_for_search"
-            android:defaultValue="20"
-            />
+            android:defaultValue="20"/>
         
         <CheckBoxPreference
             android:key="show_preview"
@@ -66,8 +65,7 @@
             android:key="measure_units"
             android:summary="@string/measure_units_summary"
             android:title="@string/measure_units" 
-            android:defaultValue="original"
-            />
+            android:defaultValue="original"/>
         
     </PreferenceCategory>
 

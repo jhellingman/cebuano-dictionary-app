@@ -7,7 +7,7 @@
         android:id="@+id/head"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_alignWithParentIfMissing="true"
         android:gravity="center_vertical"
         android:textSize="20sp" />

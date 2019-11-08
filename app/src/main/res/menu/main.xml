@@ -4,7 +4,7 @@
         android:id="@+id/search"
         android:actionViewClass="android.widget.SearchView"
         android:icon="@drawable/ic_2_action_search"
-        android:showAsAction="always"
+        android:showAsAction="ifRoom"
         android:title="@string/search_title"/>
     <item
         android:id="@+id/action_settings"
