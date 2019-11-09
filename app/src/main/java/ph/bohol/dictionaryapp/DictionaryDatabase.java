@@ -42,7 +42,9 @@ public final class DictionaryDatabase extends SQLiteAssetHelper
     private static final Map<Integer, Spanned> entryCache = Collections.synchronizedMap(new EntryCache(ENTRY_CACHE_SIZE));
     private static final int ROOT_CACHE_SIZE = 1000;
     private static final Map<String, Boolean> rootCache = Collections.synchronizedMap(new RootCache(ROOT_CACHE_SIZE));
+
     private static DictionaryDatabase instance = null;
+
     private Context context = null;
 
     /**

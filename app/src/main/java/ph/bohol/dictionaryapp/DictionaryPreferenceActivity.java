@@ -23,7 +23,6 @@ public class DictionaryPreferenceActivity extends PreferenceActivity
     public static final String VALUE_MEASURE_ORIGINAL = "original";
     public static final String VALUE_MEASURE_METRIC = "metric";
 
-
     private ListPreference searchFontSizeListPreference;
     private ListPreference presentationFontSizeListPreference;
     private ListPreference presentationStyleListPreference;
@@ -56,7 +55,6 @@ public class DictionaryPreferenceActivity extends PreferenceActivity
 
         sharedPreferences.registerOnSharedPreferenceChangeListener(this);
     }
-
 
     private String presentationStyleToText(final String presentationStyle) {
         if (presentationStyle.equalsIgnoreCase(EntryTransformer.STYLE_STRUCTURAL)) {
