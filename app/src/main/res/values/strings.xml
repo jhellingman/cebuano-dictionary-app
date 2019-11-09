@@ -17,6 +17,8 @@
     <string name="app_logo">App Logo</string>
     
     <string name="main_entry">Main entry</string>
+    <string name="status_icon">Status icon</string>
+    <string name="entry_preview">Entry preview</string>
     <string name="sub_entry">Sub entry</string>
     <string name="reverse_lookup">Reverse lookup</string>
     <string name="derived_form">Derived form</string>

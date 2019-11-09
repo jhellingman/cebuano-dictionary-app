@@ -128,7 +128,7 @@ public class ShowEntryActivity extends Activity
     private void retrievePreferences() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-        expandAbbreviations = preferences.getBoolean(DictionaryPreferenceActivity.KEY_EXPAND_ABBREVIATIONS, false);
+        expandAbbreviations = preferences.getBoolean(DictionaryPreferenceActivity.KEY_EXPAND_ABBREVIATIONS, true);
         fontSize = Integer.parseInt(preferences.getString(
                 DictionaryPreferenceActivity.KEY_PRESENTATION_FONT_SIZE, "20"));
         presentationStyle = preferences.getString(
@@ -260,7 +260,7 @@ public class ShowEntryActivity extends Activity
     public final void onSharedPreferenceChanged(final SharedPreferences preferences, final String key) {
         switch (key) {
             case DictionaryPreferenceActivity.KEY_EXPAND_ABBREVIATIONS:
-                expandAbbreviations = preferences.getBoolean(DictionaryPreferenceActivity.KEY_EXPAND_ABBREVIATIONS, false);
+                expandAbbreviations = preferences.getBoolean(DictionaryPreferenceActivity.KEY_EXPAND_ABBREVIATIONS, true);
                 break;
             case DictionaryPreferenceActivity.KEY_PRESENTATION_FONT_SIZE:
                 fontSize = Integer.parseInt(preferences.getString(DictionaryPreferenceActivity.KEY_PRESENTATION_FONT_SIZE, "20"));

@@ -18,7 +18,7 @@ public class DictionaryPreferenceActivity extends PreferenceActivity
     public static final String KEY_REVERSE_LOOKUP = "reverse_lookup";
     public static final String KEY_MEASURE_UNITS = "measure_units";
     public static final String KEY_USE_STEMMING = "use_stemming";
-    public static final String KEY_LAST_SEARCH_WORD = "last_searchword";
+    public static final String KEY_LAST_SEARCH_WORD = "last_search_word";
 
     public static final String VALUE_MEASURE_ORIGINAL = "original";
     public static final String VALUE_MEASURE_METRIC = "metric";
@@ -35,8 +35,7 @@ public class DictionaryPreferenceActivity extends PreferenceActivity
         addPreferencesFromResource(R.xml.preferences);
 
         searchFontSizeListPreference = (ListPreference) getPreferenceScreen().findPreference(KEY_SEARCH_FONT_SIZE);
-        presentationFontSizeListPreference = (ListPreference) getPreferenceScreen().
-                findPreference(KEY_PRESENTATION_FONT_SIZE);
+        presentationFontSizeListPreference = (ListPreference) getPreferenceScreen().findPreference(KEY_PRESENTATION_FONT_SIZE);
         presentationStyleListPreference = (ListPreference) getPreferenceScreen().findPreference(KEY_PRESENTATION_STYLE);
         measureUnitListPreference = (ListPreference) getPreferenceScreen().findPreference(KEY_MEASURE_UNITS);
     }
@@ -47,11 +46,11 @@ public class DictionaryPreferenceActivity extends PreferenceActivity
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         presentationStyleListPreference.setSummary(
-                presentationStyleToText(sharedPreferences.getString(KEY_PRESENTATION_STYLE, "")));
+                presentationStyleToText(sharedPreferences.getString(KEY_PRESENTATION_STYLE, EntryTransformer.STYLE_TRADITIONAL)));
         presentationFontSizeListPreference.setSummary(
-                fontSizeToText(sharedPreferences.getString(KEY_PRESENTATION_FONT_SIZE, "")));
-        searchFontSizeListPreference.setSummary(fontSizeToText(sharedPreferences.getString(KEY_SEARCH_FONT_SIZE, "")));
-        measureUnitListPreference.setSummary(measureUnitToText(sharedPreferences.getString(KEY_MEASURE_UNITS, "")));
+                fontSizeToText(sharedPreferences.getString(KEY_PRESENTATION_FONT_SIZE, "20")));
+        searchFontSizeListPreference.setSummary(fontSizeToText(sharedPreferences.getString(KEY_SEARCH_FONT_SIZE, "20")));
+        measureUnitListPreference.setSummary(measureUnitToText(sharedPreferences.getString(KEY_MEASURE_UNITS, VALUE_MEASURE_ORIGINAL)));
 
         sharedPreferences.registerOnSharedPreferenceChangeListener(this);
     }
@@ -100,19 +99,19 @@ public class DictionaryPreferenceActivity extends PreferenceActivity
         switch (key) {
             case KEY_PRESENTATION_STYLE:
                 presentationStyleListPreference.setSummary(presentationStyleToText(
-                        sharedPreferences.getString(KEY_PRESENTATION_STYLE, "")));
+                        sharedPreferences.getString(KEY_PRESENTATION_STYLE, EntryTransformer.STYLE_TRADITIONAL)));
                 break;
             case KEY_PRESENTATION_FONT_SIZE:
                 presentationFontSizeListPreference.setSummary(fontSizeToText(
-                        sharedPreferences.getString(KEY_PRESENTATION_FONT_SIZE, "")));
+                        sharedPreferences.getString(KEY_PRESENTATION_FONT_SIZE, "20")));
                 break;
             case KEY_SEARCH_FONT_SIZE:
                 searchFontSizeListPreference.setSummary(fontSizeToText(
-                        sharedPreferences.getString(KEY_SEARCH_FONT_SIZE, "")));
+                        sharedPreferences.getString(KEY_SEARCH_FONT_SIZE, "20")));
                 break;
             case KEY_MEASURE_UNITS:
                 measureUnitListPreference.setSummary(measureUnitToText(
-                        sharedPreferences.getString(KEY_MEASURE_UNITS, "")));
+                        sharedPreferences.getString(KEY_MEASURE_UNITS, VALUE_MEASURE_ORIGINAL)));
                 break;
         }
     }

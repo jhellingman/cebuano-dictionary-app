@@ -57,7 +57,7 @@
             android:key="presentation_style"
             android:summary="@string/presentation_style_summary"
             android:title="@string/presentation_style" 
-            android:defaultValue="structural"/>
+            android:defaultValue="traditional"/>
         
         <ListPreference
             android:entries="@array/measureOptions"
