@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.view.Window;
 import android.webkit.WebView;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.SearchView.OnQueryTextListener;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,7 +29,7 @@ import ph.bohol.util.stemmer.Stemmer;
 import ph.bohol.util.stemmer.StemmerParser;
 
 public class MainActivity extends Activity
-        implements SearchView.OnQueryTextListener {
+        implements OnQueryTextListener, OnSharedPreferenceChangeListener {
     static final String SEARCH_WORD = "ph.bohol.dictionaryapp.SEARCH_WORD";
     static final String ENTRY_ID = "ph.bohol.dictionaryapp.ENTRY_ID";
 
@@ -53,7 +55,9 @@ public class MainActivity extends Activity
 
         Log.d(TAG, "OnCreate");
 
-        retrievePreferences();
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
+        retrievePreferences(sharedPreferences);
         intializeStemmer();
 
         listView = findViewById(R.id.listview);
@@ -123,11 +127,10 @@ public class MainActivity extends Activity
         });
     }
 
-    private void retrievePreferences() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        reverseLookup = preferences.getBoolean(DictionaryPreferenceActivity.KEY_REVERSE_LOOKUP, false);
-        useStemming = preferences.getBoolean(DictionaryPreferenceActivity.KEY_USE_STEMMING, false);
-        lastSearchWord = preferences.getString(DictionaryPreferenceActivity.KEY_LAST_SEARCH_WORD, "");
+    private void retrievePreferences(SharedPreferences sharedPreferences) {
+        reverseLookup = sharedPreferences.getBoolean(DictionaryPreferenceActivity.KEY_REVERSE_LOOKUP, false);
+        useStemming = sharedPreferences.getBoolean(DictionaryPreferenceActivity.KEY_USE_STEMMING, false);
+        lastSearchWord = sharedPreferences.getString(DictionaryPreferenceActivity.KEY_LAST_SEARCH_WORD, "");
     }
 
     private void saveSearchWord() {
@@ -193,7 +196,6 @@ public class MainActivity extends Activity
     protected final void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        // TODO use OnSharedPreferenceChangeListener to detect preference changes.
         if (resultCode == Activity.RESULT_CANCELED && !(requestCode == RESULT_SETTINGS)) {
             return;
         }
@@ -211,12 +213,28 @@ public class MainActivity extends Activity
                 }
                 break;
             case RESULT_SETTINGS:
-                retrievePreferences();
+                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+                retrievePreferences(sharedPreferences);
                 update();
                 break;
             default:
                 break;
         }
+    }
+
+    @Override
+    protected final void onPause() {
+        super.onPause();
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPreferences.unregisterOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    protected final void onResume() {
+        super.onResume();
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        retrievePreferences(sharedPreferences);
+        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
     }
 
     @Override
@@ -243,6 +261,11 @@ public class MainActivity extends Activity
         // Already handled by the onQueryTextChange() handler, just close the search
         searchView.clearFocus();
         return true;
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        retrievePreferences(sharedPreferences);
     }
 
     private class PrepareCursorTask extends AsyncTask<String, Void, Cursor> {

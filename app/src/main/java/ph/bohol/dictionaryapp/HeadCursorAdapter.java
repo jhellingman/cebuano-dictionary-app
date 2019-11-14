@@ -15,6 +15,8 @@ import android.widget.TextView;
 
 import java.lang.ref.WeakReference;
 
+import static ph.bohol.dictionaryapp.DictionaryPreferenceActivity.*;
+
 class HeadCursorAdapter extends CursorAdapter {
     private final LayoutInflater layoutInflater;
     private boolean showPreview;
@@ -25,7 +27,7 @@ class HeadCursorAdapter extends CursorAdapter {
         layoutInflater = LayoutInflater.from(context);
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        showPreview = preferences.getBoolean("show_preview", true);
+        showPreview = preferences.getBoolean(KEY_SHOW_PREVIEW, true);
     }
 
     @Override

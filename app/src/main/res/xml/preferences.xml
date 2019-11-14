@@ -16,20 +16,23 @@
         <CheckBoxPreference
             android:key="show_preview"
             android:summary="@string/show_preview_summary"
-            android:title="@string/show_preview" 
+            android:title="@string/show_preview"
+            android:checked="true"
             android:defaultValue="true"/>
         
         <!--<CheckBoxPreference
             android:key="use_stemming"
             android:summary="@string/use_stemming_summary"
-            android:title="@string/use_stemming" 
+            android:title="@string/use_stemming"
+            android:checked="false"
             android:defaultValue="true"/>-->
         
         <CheckBoxPreference
             android:key="reverse_lookup"
             android:summary="@string/use_reverse_lookup_summary"
-            android:title="@string/use_reverse_lookup" 
-            android:defaultValue="false"/>        
+            android:title="@string/use_reverse_lookup"
+            android:checked="false"
+            android:defaultValue="false"/>
            
     </PreferenceCategory>
     
@@ -48,7 +51,8 @@
         <CheckBoxPreference
             android:key="expand_abbreviations"
             android:summary="@string/expand_abbreviations_summary"
-            android:title="@string/expand_abbreviations" 
+            android:title="@string/expand_abbreviations"
+            android:checked="true"
             android:defaultValue="true"/>
 
         <ListPreference

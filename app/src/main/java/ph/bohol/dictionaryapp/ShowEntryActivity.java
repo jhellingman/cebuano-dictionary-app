@@ -20,6 +20,8 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
+import static ph.bohol.dictionaryapp.DictionaryPreferenceActivity.*;
+
 public class ShowEntryActivity extends Activity
         implements OnSharedPreferenceChangeListener {
     private static final int DEFAULT_FONT_SIZE = 20;
@@ -55,7 +57,9 @@ public class ShowEntryActivity extends Activity
         gestureDetector = new GestureDetector(this, new MyGestureDetector());
         gestureListener = (view, event) -> gestureDetector.onTouchEvent(event);
 
-        retrievePreferences();
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        preferences.registerOnSharedPreferenceChangeListener(this);
+        retrievePreferences(preferences);
 
         // Get entryId after resume (e.g. after a rotation).
         if (savedInstanceState != null) {
@@ -125,17 +129,11 @@ public class ShowEntryActivity extends Activity
         return entryTransformer.transform(wrappedEntry, presentationStyle);
     }
 
-    private void retrievePreferences() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-
-        expandAbbreviations = preferences.getBoolean(DictionaryPreferenceActivity.KEY_EXPAND_ABBREVIATIONS, true);
-        fontSize = Integer.parseInt(preferences.getString(
-                DictionaryPreferenceActivity.KEY_PRESENTATION_FONT_SIZE, "20"));
-        presentationStyle = preferences.getString(
-                DictionaryPreferenceActivity.KEY_PRESENTATION_STYLE, EntryTransformer.STYLE_TRADITIONAL);
-        useMetric = preferences.getString(DictionaryPreferenceActivity.KEY_MEASURE_UNITS,
-                DictionaryPreferenceActivity.VALUE_MEASURE_ORIGINAL).
-                equals(DictionaryPreferenceActivity.VALUE_MEASURE_METRIC);
+    private void retrievePreferences(SharedPreferences sharedPreferences) {
+        expandAbbreviations = sharedPreferences.getBoolean(KEY_EXPAND_ABBREVIATIONS, true);
+        fontSize = Integer.parseInt(sharedPreferences.getString(KEY_PRESENTATION_FONT_SIZE, "20"));
+        presentationStyle = sharedPreferences.getString(KEY_PRESENTATION_STYLE, EntryTransformer.STYLE_TRADITIONAL);
+        useMetric = sharedPreferences.getString(KEY_MEASURE_UNITS, VALUE_MEASURE_ORIGINAL).equals(VALUE_MEASURE_METRIC);
     }
 
     /**
@@ -223,18 +221,16 @@ public class ShowEntryActivity extends Activity
         showEntry();
     }
 
-    // TODO / DONE use OnSharedPreferenceChangeListener to detect preference changes.
     @Override
     protected final void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        // TODO / DONE use OnSharedPreferenceChangeListener to detect preference changes.
         if (resultCode == Activity.RESULT_CANCELED && !(requestCode == RESULT_SETTINGS)) {
             return;
         }
-
         if (requestCode == RESULT_SETTINGS) {
-            retrievePreferences();
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+            retrievePreferences(sharedPreferences);
             showEntry();
         }
     }
@@ -243,9 +239,7 @@ public class ShowEntryActivity extends Activity
     protected final void onResume() {
         super.onResume();
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-
-        retrievePreferences();
-
+        retrievePreferences(sharedPreferences);
         sharedPreferences.registerOnSharedPreferenceChangeListener(this);
     }
 
@@ -257,22 +251,23 @@ public class ShowEntryActivity extends Activity
     }
 
     @Override
-    public final void onSharedPreferenceChanged(final SharedPreferences preferences, final String key) {
+    public final void onSharedPreferenceChanged(final SharedPreferences sharedPreferences, final String key) {
+        retrievePreferences(sharedPreferences);
         switch (key) {
-            case DictionaryPreferenceActivity.KEY_EXPAND_ABBREVIATIONS:
-                expandAbbreviations = preferences.getBoolean(DictionaryPreferenceActivity.KEY_EXPAND_ABBREVIATIONS, true);
+            case KEY_EXPAND_ABBREVIATIONS:
+                expandAbbreviations = sharedPreferences.getBoolean(KEY_EXPAND_ABBREVIATIONS, true);
                 break;
-            case DictionaryPreferenceActivity.KEY_PRESENTATION_FONT_SIZE:
-                fontSize = Integer.parseInt(preferences.getString(DictionaryPreferenceActivity.KEY_PRESENTATION_FONT_SIZE, "20"));
+            case KEY_PRESENTATION_FONT_SIZE:
+                fontSize = Integer.parseInt(sharedPreferences.getString(KEY_PRESENTATION_FONT_SIZE, "20"));
                 break;
-            case DictionaryPreferenceActivity.KEY_PRESENTATION_STYLE:
-                presentationStyle = preferences.getString(DictionaryPreferenceActivity.KEY_PRESENTATION_STYLE,
+            case KEY_PRESENTATION_STYLE:
+                presentationStyle = sharedPreferences.getString(KEY_PRESENTATION_STYLE,
                         EntryTransformer.STYLE_TRADITIONAL);
                 break;
-            case DictionaryPreferenceActivity.KEY_MEASURE_UNITS:
-                useMetric = preferences.getString(DictionaryPreferenceActivity.KEY_MEASURE_UNITS,
-                        DictionaryPreferenceActivity.VALUE_MEASURE_ORIGINAL).equals(
-                        DictionaryPreferenceActivity.VALUE_MEASURE_METRIC);
+            case KEY_MEASURE_UNITS:
+                useMetric = sharedPreferences.getString(KEY_MEASURE_UNITS,
+                        VALUE_MEASURE_ORIGINAL).equals(
+                        VALUE_MEASURE_METRIC);
                 break;
         }
     }

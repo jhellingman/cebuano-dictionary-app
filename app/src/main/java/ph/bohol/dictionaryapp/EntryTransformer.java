@@ -38,7 +38,7 @@ public final class EntryTransformer {
     private static final int DEFAULT_FONT_SIZE = 20;
 
     private int fontSize = DEFAULT_FONT_SIZE;
-    private boolean expandAbbreviations = false;
+    private boolean expandAbbreviations = true;
     private boolean useMetric = false;
 
     private final Context context;
@@ -65,19 +65,14 @@ public final class EntryTransformer {
     String transform(final String entry, final String presentationStyle) {
         try {
             Transformer transformer = getTransformer(presentationStyle);
-
             StringReader reader = new StringReader(entry);
             Source xmlSource = new StreamSource(reader);
-
             Writer stringWriter = new StringWriter();
             StreamResult streamResult = new StreamResult(stringWriter);
-
             transformer.transform(xmlSource, streamResult);
-
             return stringWriter.toString();
         } catch (IOException | TransformerException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            Log.d(TAG, "Failed to transform entry.");
         }
         return "";
     }
