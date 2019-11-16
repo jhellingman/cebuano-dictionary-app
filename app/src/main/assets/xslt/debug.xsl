@@ -21,51 +21,28 @@
                 <style type="text/css">
 
                     body { font-size: <xsl:value-of select="$fontSize"/>pt; }
-
                     .entry, .hom, .sense, .eg { margin: 5px; }
-
                     .entry { margin-top: 10px; }
-
                     .entry { margin-left: 10px; padding-left: 10px; }
-
                     .hom { margin-left: 10px; border-left: solid 4px #FF858B; padding-left: 10px; }
-
                     .noun { border-color: #8FFC84; }
-                    
                     .verb { border-color: #8EB4F9; }
-                    
                     .adjective { border-color: #FFFE86; }
-
                     .sense { margin-left: 10px; padding-left: 10px; }
-
                     .form { font-size: 110%; }
-
                     .eg { margin-left: 10px; padding-left: 10px; }
-
                     .eg { color: gray; font-size: 90% }
-                    
                     .eg i { font-style: italic }
-
                     .pos { font-size: 110%; color: red; }
-
                     .num { color: blue; }
-
                     .itype { }
-                    
                     .bio { font-style: italic; font-weight: bold; }
-                    
                     .tr { }
-                    
                     .xr { }
-                                        
                     .gramGrp { }
-                    
                     .rm { font-style: normal; font-weight: normal; }
-                    
                     .tr { background-color: #FFFF99; }
-                                       
                     .expan { color: #6600CC; }
-                    
                     .pb { color: green; }
                     
                 </style>

@@ -12,6 +12,7 @@
     <xsl:param name="fontSize" select="'20'"/>    
     <xsl:param name="expandAbbreviations" select="'false'"/>
     <xsl:param name="useMetric" select="'false'"/>
+    <xsl:param name="useNightMode" select="'false'"/>
 
     <xsl:key name="id" match="*[@id]" use="@id"/>
 
@@ -25,47 +26,32 @@
                 <style type="text/css">
 
                     body { font-size: <xsl:value-of select="$fontSize"/>pt; }
-
                     .entry, .hom, .sense, .eg { margin: 5px; }
-
                     .entry { margin-top: 10px; }
-
                     .entry { margin-left: 10px; padding-left: 10px; }
-
                     .hom { margin-left: 10px; border-left: solid 4px #FF858B; padding-left: 10px; }
-
                     .noun { border-color: #8FFC84; }
-                    
                     .verb { border-color: #8EB4F9; }
-                    
                     .adjective { border-color: #FFFE86; }
-
                     .sense { margin-left: 10px; padding-left: 10px; }
-
                     .form { font-size: 110%; }
-
                     .eg { margin-left: 10px; padding-left: 10px; }
-
                     .eg { color: gray; font-size: 90% }
-                    
                     .eg i { font-style: italic }
-
                     .pos { font-size: 110%; color: red; }
-
                     .num { color: blue; }
-
                     .itype { }
-                    
                     .bio { font-style: italic; font-weight: bold; }
-                    
                     .tr { }
-                    
                     .xr { }
-                                        
                     .gramGrp { }
-                    
                     .rm { font-style: normal; font-weight: normal; }
 
+                    <xsl:if test="$useNightMode = 'true'">
+                        body { background-color: #121212; color: #FFFFFF;}
+                        .num { color: #00ccff; }
+                        a { color: #00ccff; }
+                    </xsl:if>
                 </style>
             </head>
             <body>

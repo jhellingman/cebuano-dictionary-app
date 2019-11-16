@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
@@ -22,8 +23,8 @@ import android.widget.Toast;
 
 import static ph.bohol.dictionaryapp.DictionaryPreferenceActivity.*;
 
-public class ShowEntryActivity extends Activity
-        implements OnSharedPreferenceChangeListener {
+public class ShowEntryActivity extends AppCompatActivity
+implements OnSharedPreferenceChangeListener {
     private static final int DEFAULT_FONT_SIZE = 20;
     private int fontSize = DEFAULT_FONT_SIZE;
     private static final int RESULT_SETTINGS = 1;
@@ -34,11 +35,15 @@ public class ShowEntryActivity extends Activity
     private static final String TAG = "ShowEntryActivity";
     private static final String SEARCH_URL = "search:";
     private int entryId;
+
+    // Preferences
     private boolean expandAbbreviations = false;
     private boolean useMetric = false;
+    private boolean useNightMode = false;
     private boolean givenSwipeNextHint = false;
     private boolean givenSwipePreviousHint = false;
     private String presentationStyle = EntryTransformer.STYLE_TRADITIONAL;
+
     private GestureDetector gestureDetector;
     private View.OnTouchListener gestureListener;
 
@@ -126,6 +131,7 @@ public class ShowEntryActivity extends Activity
         entryTransformer.setExpandAbbreviations(expandAbbreviations);
         entryTransformer.setFontSize(fontSize);
         entryTransformer.setUseMetric(useMetric);
+        entryTransformer.setUseNightMode(useNightMode);
         return entryTransformer.transform(wrappedEntry, presentationStyle);
     }
 
@@ -134,13 +140,14 @@ public class ShowEntryActivity extends Activity
         fontSize = Integer.parseInt(sharedPreferences.getString(KEY_PRESENTATION_FONT_SIZE, "20"));
         presentationStyle = sharedPreferences.getString(KEY_PRESENTATION_STYLE, EntryTransformer.STYLE_TRADITIONAL);
         useMetric = sharedPreferences.getString(KEY_MEASURE_UNITS, VALUE_MEASURE_ORIGINAL).equals(VALUE_MEASURE_METRIC);
+        useNightMode = sharedPreferences.getBoolean(KEY_NIGHT_MODE, false);
     }
 
     /**
      * Set up the {@link android.app.ActionBar}.
      */
     private void setupActionBar() {
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        // getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override

@@ -11,15 +11,14 @@ on GitHub.
 
 ### How do I get set up? ###
 
-* Download Android Studio (http://developer.android.com/sdk/index.html)
-* Download an Android Emulator; Genymotion is great (https://www.genymotion.com/#!/)
+* Download Android Studio (https://developer.android.com/studio)
 * Set up your own keystore for signing your own builds (That is not shared for obvious reasons)
 
 For rebuilding the dictionary database itself, you'll need to
 
 * Get the dictionary data from https://github.com/jhellingman/phildict/tree/master/Data/Wolff
-* Get a working perl configuration (on windows, for example: http://strawberryperl.com/)
-* Get sqlite3 (http://www.sqlite.org/)
+* Get a working perl configuration (on Windows, for example: http://strawberryperl.com/)
+* Get sqlite3 (https://www.sqlite.org/)
 * Perl scripts are included there that build the compressed resource included in the dictionary app.
 
 Note that if you follow the database structure, it will be fairly easy to load other dictionaries into this app; however, some code changes will be needed. I will be happy to assist in doing this, and am working on further public domain dictionary databases to be converted into an app.
@@ -53,4 +52,4 @@ If you can help writing automated UI tests, your help and knowledge will be most
 
 ### How this came to be... ###
 
-You can read how this dictionary was converted to the digital domain in this blog entry: http://blog.pgdp.net/2015/03/07/from-paper-to-app-how-distributed-proofreaders-got-a-cebuano-dictionary-on-smartphones/
+You can read how this dictionary was converted to the digital domain in this blog entry: https://blog.pgdp.net/2015/03/07/from-paper-to-app-how-distributed-proofreaders-got-a-cebuano-dictionary-on-smartphones/

@@ -40,6 +40,7 @@ public final class EntryTransformer {
     private int fontSize = DEFAULT_FONT_SIZE;
     private boolean expandAbbreviations = true;
     private boolean useMetric = false;
+    private boolean useNightMode = false;
 
     private final Context context;
 
@@ -95,7 +96,7 @@ public final class EntryTransformer {
         transformer.setParameter("useMetric", Boolean.toString(useMetric));
         transformer.setParameter("expandAbbreviations", Boolean.toString(expandAbbreviations));
         transformer.setParameter("fontSize", Integer.toString(fontSize));
-
+        transformer.setParameter("useNightMode", Boolean.toString(useNightMode));
         return transformer;
     }
 
@@ -129,5 +130,9 @@ public final class EntryTransformer {
 
     void setFontSize(final int newFontSize) {
         this.fontSize = newFontSize;
+    }
+
+    void setUseNightMode(final boolean newUseNightMode) {
+        this.useNightMode = newUseNightMode;
     }
 }

@@ -18,6 +18,7 @@ public class DictionaryPreferenceActivity extends PreferenceActivity
     public static final String KEY_PRESENTATION_STYLE = "presentation_style";
     public static final String KEY_REVERSE_LOOKUP = "reverse_lookup";
     public static final String KEY_MEASURE_UNITS = "measure_units";
+    public static final String KEY_NIGHT_MODE = "night_mode";
     public static final String KEY_USE_STEMMING = "use_stemming";
     public static final String KEY_LAST_SEARCH_WORD = "last_search_word";
     public static final String KEY_SHOW_PREVIEW = "show_preview";
@@ -29,9 +30,11 @@ public class DictionaryPreferenceActivity extends PreferenceActivity
     private ListPreference presentationFontSizeListPreference;
     private ListPreference presentationStyleListPreference;
     private ListPreference measureUnitListPreference;
+
     private CheckBoxPreference reverseLookupCheckBoxPreference;
     private CheckBoxPreference expandAbbreviationsCheckBoxPreference;
     private CheckBoxPreference showPreviewCheckBoxPreference;
+    private CheckBoxPreference nightModeCheckBoxPreference;
 
     @SuppressWarnings("deprecation")
     @Override
@@ -50,6 +53,7 @@ public class DictionaryPreferenceActivity extends PreferenceActivity
         reverseLookupCheckBoxPreference = (CheckBoxPreference) getPreferenceScreen().findPreference(KEY_REVERSE_LOOKUP);
         expandAbbreviationsCheckBoxPreference = (CheckBoxPreference) getPreferenceScreen().findPreference(KEY_EXPAND_ABBREVIATIONS);
         showPreviewCheckBoxPreference = (CheckBoxPreference) getPreferenceScreen().findPreference(KEY_SHOW_PREVIEW);
+        nightModeCheckBoxPreference = (CheckBoxPreference) getPreferenceScreen().findPreference(KEY_NIGHT_MODE);
     }
 
     @Override
@@ -72,6 +76,25 @@ public class DictionaryPreferenceActivity extends PreferenceActivity
         reverseLookupCheckBoxPreference.setChecked(sharedPreferences.getBoolean(KEY_REVERSE_LOOKUP, false));
         expandAbbreviationsCheckBoxPreference.setChecked(sharedPreferences.getBoolean(KEY_EXPAND_ABBREVIATIONS, true));
         showPreviewCheckBoxPreference.setChecked(sharedPreferences.getBoolean(KEY_SHOW_PREVIEW, true));
+        nightModeCheckBoxPreference.setChecked(sharedPreferences.getBoolean(KEY_NIGHT_MODE, false));
+    }
+
+    @Override
+    public final void onSharedPreferenceChanged(final SharedPreferences sharedPreferences, final String key) {
+        switch (key) {
+            case KEY_PRESENTATION_STYLE:
+                presentationStyleListPreference.setSummary(presentationStyleToText(sharedPreferences.getString(KEY_PRESENTATION_STYLE, EntryTransformer.STYLE_TRADITIONAL)));
+                break;
+            case KEY_PRESENTATION_FONT_SIZE:
+                presentationFontSizeListPreference.setSummary(fontSizeToText(sharedPreferences.getString(KEY_PRESENTATION_FONT_SIZE, "20")));
+                break;
+            case KEY_SEARCH_FONT_SIZE:
+                searchFontSizeListPreference.setSummary(fontSizeToText(sharedPreferences.getString(KEY_SEARCH_FONT_SIZE, "20")));
+                break;
+            case KEY_MEASURE_UNITS:
+                measureUnitListPreference.setSummary(measureUnitToText(sharedPreferences.getString(KEY_MEASURE_UNITS, VALUE_MEASURE_ORIGINAL)));
+                break;
+        }
     }
 
     private String presentationStyleToText(final String presentationStyle) {
@@ -105,22 +128,5 @@ public class DictionaryPreferenceActivity extends PreferenceActivity
             return getString(R.string.measure_metric);
         }
         return getString(R.string.measure_original);
-    }
-
-    public final void onSharedPreferenceChanged(final SharedPreferences sharedPreferences, final String key) {
-        switch (key) {
-            case KEY_PRESENTATION_STYLE:
-                presentationStyleListPreference.setSummary(presentationStyleToText(sharedPreferences.getString(KEY_PRESENTATION_STYLE, EntryTransformer.STYLE_TRADITIONAL)));
-                break;
-            case KEY_PRESENTATION_FONT_SIZE:
-                presentationFontSizeListPreference.setSummary(fontSizeToText(sharedPreferences.getString(KEY_PRESENTATION_FONT_SIZE, "20")));
-                break;
-            case KEY_SEARCH_FONT_SIZE:
-                searchFontSizeListPreference.setSummary(fontSizeToText(sharedPreferences.getString(KEY_SEARCH_FONT_SIZE, "20")));
-                break;
-            case KEY_MEASURE_UNITS:
-                measureUnitListPreference.setSummary(measureUnitToText(sharedPreferences.getString(KEY_MEASURE_UNITS, VALUE_MEASURE_ORIGINAL)));
-                break;
-        }
     }
 }

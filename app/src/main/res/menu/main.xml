@@ -1,25 +1,24 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
-
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
     <item
         android:id="@+id/search"
-        android:actionViewClass="android.widget.SearchView"
         android:icon="@drawable/ic_2_action_search"
-        android:showAsAction="ifRoom"
-        android:title="@string/search_title"/>
+        android:title="@string/search_title"
+        app:actionViewClass="android.widget.SearchView"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
-        android:showAsAction="never"
-        android:title="@string/action_settings"/>
+        android:title="@string/action_settings"
+        app:showAsAction="never" />
     <item
         android:id="@+id/help"
         android:icon="@drawable/ic_2_action_help"
-        android:showAsAction="never"
-        android:title="@string/help"/>
+        android:title="@string/help"
+        app:showAsAction="never" />
 	<item
         android:id="@+id/about"
         android:icon="@drawable/ic_2_action_about"
-        android:showAsAction="never"
-        android:title="@string/about"/>
-        
+        android:title="@string/about"
+        app:showAsAction="never" />
 </menu>

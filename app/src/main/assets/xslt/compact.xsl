@@ -16,6 +16,7 @@
     <xsl:param name="fontSize" select="'20'"/>    
     <xsl:param name="expandAbbreviations" select="'false'"/>
     <xsl:param name="useMetric" select="'false'"/>
+    <xsl:param name="useNightMode" select="'false'"/>
 
     <xsl:template match="dictionary">
         <html>
@@ -25,7 +26,6 @@
                 <style type="text/css">
 
                     body { font-size: <xsl:value-of select="$fontSize"/>pt; }
-
                     .rm { font-style: normal; font-weight: normal; }
 
                 </style>

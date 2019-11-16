@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,8 +29,8 @@ import ph.bohol.util.stemmer.Derivation;
 import ph.bohol.util.stemmer.Stemmer;
 import ph.bohol.util.stemmer.StemmerParser;
 
-public class MainActivity extends Activity
-        implements OnQueryTextListener, OnSharedPreferenceChangeListener {
+public class MainActivity extends AppCompatActivity
+implements OnQueryTextListener, OnSharedPreferenceChangeListener {
     static final String SEARCH_WORD = "ph.bohol.dictionaryapp.SEARCH_WORD";
     static final String ENTRY_ID = "ph.bohol.dictionaryapp.ENTRY_ID";
 
@@ -38,11 +39,11 @@ public class MainActivity extends Activity
     private static final int RESULT_SHOW_ENTRY = 2;
     private static final String ASSET_STEMMER_CEBUANO = "xml/stemmerCebuano.xml";
 
-    private SearchView searchView;
+    private SearchView searchView = null;
     private ListView listView = null;
     private WebView webView = null;
     private Cursor cursor = null;
-    private String searchWord;
+    private String searchWord = null;
     private Stemmer stemmer = null;
     private boolean reverseLookup = false;
     private boolean useStemming = false;

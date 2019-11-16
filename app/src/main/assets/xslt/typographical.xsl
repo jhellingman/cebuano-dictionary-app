@@ -16,6 +16,7 @@
     <xsl:param name="fontSize" select="'20'"/>
     <xsl:param name="expandAbbreviations" select="'false'"/>
     <xsl:param name="useMetric" select="'false'"/>
+    <xsl:param name="useNightMode" select="'false'"/>
 
     <xsl:template match="dictionary">
         <html>
@@ -25,30 +26,24 @@
                 <style type="text/css">
 
                     body { font-size: <xsl:value-of select="$fontSize"/>pt; }
-
                     .form { font-size: 110%; }
-
                     .eg { font-size: 90%; color: gray; }
-                    
                     .eg i {  font-style: italic }
-
                     .pos { font-size: 110%; color: red; }
-
                     .num { font-weight: bold; color: blue; }
-
                     .itype { }
-
                     .bio { font-style: italic; font-weight: bold; }
-                    
                     .tr {  }
-                    
                     .xr {  }
-                    
                     .gramGrp {  }
-                    
                     .exp { color: grey; }
-
                     .rm { font-style: normal; font-weight: normal; }
+
+                    <xsl:if test="$useNightMode = 'true'">
+                        body { background-color: #121212; color: #FFFFFF;}
+                        .num { color: #00ccff; }
+                        a { color: #00ccff; }
+                    </xsl:if>
 
                 </style>
             </head>
