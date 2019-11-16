@@ -26,8 +26,8 @@ class HeadCursorAdapter extends CursorAdapter {
         super(context, cursor);
         layoutInflater = LayoutInflater.from(context);
 
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        showPreview = preferences.getBoolean(KEY_SHOW_PREVIEW, true);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        showPreview = sharedPreferences.getBoolean(KEY_SHOW_PREVIEW, true);
     }
 
     @Override

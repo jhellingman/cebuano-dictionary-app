@@ -75,8 +75,8 @@
             android:key="night_mode"
             android:summary="@string/night_mode_summary"
             android:title="@string/night_mode"
-            android:checked="false"
-            android:defaultValue="false"/>
+            android:checked="true"
+            android:defaultValue="true"/>
 
     </PreferenceCategory>
 

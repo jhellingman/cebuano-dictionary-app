@@ -36,7 +36,7 @@
                     .sense { margin-left: 10px; padding-left: 10px; }
                     .form { font-size: 110%; }
                     .eg { margin-left: 10px; padding-left: 10px; }
-                    .eg { color: gray; font-size: 90% }
+                    .eg { color: #606060; font-size: 90% }
                     .eg i { font-style: italic }
                     .pos { font-size: 110%; color: red; }
                     .num { color: blue; }
@@ -48,9 +48,11 @@
                     .rm { font-style: normal; font-weight: normal; }
 
                     <xsl:if test="$useNightMode = 'true'">
-                        body { background-color: #121212; color: #FFFFFF;}
+                        body { background-color: #272727; color: #FFFFFF; }
+                        .pos { color: #ff6666; }
                         .num { color: #00ccff; }
                         a { color: #00ccff; }
+                        .exp, .eg { color: #c0c0c0; }
                     </xsl:if>
                 </style>
             </head>

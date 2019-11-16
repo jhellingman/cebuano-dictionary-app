@@ -27,8 +27,8 @@
 
                     body { font-size: <xsl:value-of select="$fontSize"/>pt; }
                     .form { font-size: 110%; }
-                    .eg { font-size: 90%; color: gray; }
-                    .eg i {  font-style: italic }
+                    .eg { font-size: 90%; color: #606060; }
+                    .eg i { font-style: italic }
                     .pos { font-size: 110%; color: red; }
                     .num { font-weight: bold; color: blue; }
                     .itype { }
@@ -36,13 +36,15 @@
                     .tr {  }
                     .xr {  }
                     .gramGrp {  }
-                    .exp { color: grey; }
+                    .exp { color: #606060; }
                     .rm { font-style: normal; font-weight: normal; }
 
                     <xsl:if test="$useNightMode = 'true'">
-                        body { background-color: #121212; color: #FFFFFF;}
+                        body { background-color: #272727; color: #FFFFFF;}
+                        .pos { color: #ff6666; }
                         .num { color: #00ccff; }
                         a { color: #00ccff; }
+                        .exp, .eg { color: #c0c0c0; }
                     </xsl:if>
 
                 </style>

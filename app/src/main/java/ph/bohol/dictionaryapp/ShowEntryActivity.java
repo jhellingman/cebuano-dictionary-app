@@ -3,7 +3,6 @@ package ph.bohol.dictionaryapp;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,10 +20,15 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
-import static ph.bohol.dictionaryapp.DictionaryPreferenceActivity.*;
+import static ph.bohol.dictionaryapp.DictionaryPreferenceActivity.KEY_EXPAND_ABBREVIATIONS;
+import static ph.bohol.dictionaryapp.DictionaryPreferenceActivity.KEY_MEASURE_UNITS;
+import static ph.bohol.dictionaryapp.DictionaryPreferenceActivity.KEY_NIGHT_MODE;
+import static ph.bohol.dictionaryapp.DictionaryPreferenceActivity.KEY_PRESENTATION_FONT_SIZE;
+import static ph.bohol.dictionaryapp.DictionaryPreferenceActivity.KEY_PRESENTATION_STYLE;
+import static ph.bohol.dictionaryapp.DictionaryPreferenceActivity.VALUE_MEASURE_METRIC;
+import static ph.bohol.dictionaryapp.DictionaryPreferenceActivity.VALUE_MEASURE_ORIGINAL;
 
-public class ShowEntryActivity extends AppCompatActivity
-implements OnSharedPreferenceChangeListener {
+public class ShowEntryActivity extends AppCompatActivity {
     private static final int DEFAULT_FONT_SIZE = 20;
     private int fontSize = DEFAULT_FONT_SIZE;
     private static final int RESULT_SETTINGS = 1;
@@ -39,11 +43,11 @@ implements OnSharedPreferenceChangeListener {
     // Preferences
     private boolean expandAbbreviations = false;
     private boolean useMetric = false;
-    private boolean useNightMode = false;
-    private boolean givenSwipeNextHint = false;
-    private boolean givenSwipePreviousHint = false;
+    private boolean useNightMode = true;
     private String presentationStyle = EntryTransformer.STYLE_TRADITIONAL;
 
+    private boolean givenSwipeNextHint = false;
+    private boolean givenSwipePreviousHint = false;
     private GestureDetector gestureDetector;
     private View.OnTouchListener gestureListener;
 
@@ -56,15 +60,11 @@ implements OnSharedPreferenceChangeListener {
 
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
 
-        // Show the Up button in the action bar.
-        setupActionBar();
-
         gestureDetector = new GestureDetector(this, new MyGestureDetector());
         gestureListener = (view, event) -> gestureDetector.onTouchEvent(event);
 
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        preferences.registerOnSharedPreferenceChangeListener(this);
-        retrievePreferences(preferences);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        retrievePreferences(sharedPreferences);
 
         // Get entryId after resume (e.g. after a rotation).
         if (savedInstanceState != null) {
@@ -93,7 +93,7 @@ implements OnSharedPreferenceChangeListener {
             String htmlEntry = transformEntry(entry);
 
             if (htmlEntry != null) {
-                WebView webView = (WebView) this.findViewById(R.id.webViewEntry);
+                WebView webView = this.findViewById(R.id.webViewEntry);
                 if (webView != null) {
                     webView.setWebViewClient(new WebViewClient() {
                         @Override
@@ -139,15 +139,8 @@ implements OnSharedPreferenceChangeListener {
         expandAbbreviations = sharedPreferences.getBoolean(KEY_EXPAND_ABBREVIATIONS, true);
         fontSize = Integer.parseInt(sharedPreferences.getString(KEY_PRESENTATION_FONT_SIZE, "20"));
         presentationStyle = sharedPreferences.getString(KEY_PRESENTATION_STYLE, EntryTransformer.STYLE_TRADITIONAL);
-        useMetric = sharedPreferences.getString(KEY_MEASURE_UNITS, VALUE_MEASURE_ORIGINAL).equals(VALUE_MEASURE_METRIC);
-        useNightMode = sharedPreferences.getBoolean(KEY_NIGHT_MODE, false);
-    }
-
-    /**
-     * Set up the {@link android.app.ActionBar}.
-     */
-    private void setupActionBar() {
-        // getActionBar().setDisplayHomeAsUpEnabled(true);
+        useMetric = VALUE_MEASURE_METRIC.equals(sharedPreferences.getString(KEY_MEASURE_UNITS, VALUE_MEASURE_ORIGINAL));
+        useNightMode = sharedPreferences.getBoolean(KEY_NIGHT_MODE, true);
     }
 
     @Override
@@ -247,36 +240,11 @@ implements OnSharedPreferenceChangeListener {
         super.onResume();
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         retrievePreferences(sharedPreferences);
-        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
     }
 
     @Override
     protected final void onPause() {
         super.onPause();
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        sharedPreferences.unregisterOnSharedPreferenceChangeListener(this);
-    }
-
-    @Override
-    public final void onSharedPreferenceChanged(final SharedPreferences sharedPreferences, final String key) {
-        retrievePreferences(sharedPreferences);
-        switch (key) {
-            case KEY_EXPAND_ABBREVIATIONS:
-                expandAbbreviations = sharedPreferences.getBoolean(KEY_EXPAND_ABBREVIATIONS, true);
-                break;
-            case KEY_PRESENTATION_FONT_SIZE:
-                fontSize = Integer.parseInt(sharedPreferences.getString(KEY_PRESENTATION_FONT_SIZE, "20"));
-                break;
-            case KEY_PRESENTATION_STYLE:
-                presentationStyle = sharedPreferences.getString(KEY_PRESENTATION_STYLE,
-                        EntryTransformer.STYLE_TRADITIONAL);
-                break;
-            case KEY_MEASURE_UNITS:
-                useMetric = sharedPreferences.getString(KEY_MEASURE_UNITS,
-                        VALUE_MEASURE_ORIGINAL).equals(
-                        VALUE_MEASURE_METRIC);
-                break;
-        }
     }
 
     private class MyGestureDetector extends SimpleOnGestureListener {

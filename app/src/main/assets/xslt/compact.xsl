@@ -28,6 +28,10 @@
                     body { font-size: <xsl:value-of select="$fontSize"/>pt; }
                     .rm { font-style: normal; font-weight: normal; }
 
+                    <xsl:if test="$useNightMode = 'true'">
+                        body { background-color: #272727; color: #FFFFFF; }
+                        a { color: #00ccff; }
+                    </xsl:if>
                 </style>
             </head>
             <body>

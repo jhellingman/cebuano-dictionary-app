@@ -22,9 +22,6 @@ import ph.bohol.util.stemmer.RootWordProvider;
 public final class DictionaryDatabase extends SQLiteAssetHelper
         implements RootWordProvider {
 
-    public static final String HEAD_ID = "_id";
-    public static final String HEAD_NORMALIZED_HEAD = "normalized_head";
-
     static final String HEAD_HEAD = "head";
     static final String HEAD_ENTRY_ID = "entryid";
     static final String HEAD_DERIVATION = "derivation";
@@ -45,7 +42,7 @@ public final class DictionaryDatabase extends SQLiteAssetHelper
 
     private static DictionaryDatabase instance = null;
 
-    private Context context = null;
+    private Context context;
 
     /**
      * Create a new DictionaryDatabase object. Prevent resource leaks by using this only as a singleton, using the

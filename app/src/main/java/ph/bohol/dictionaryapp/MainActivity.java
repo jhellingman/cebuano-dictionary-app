@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -30,7 +29,7 @@ import ph.bohol.util.stemmer.Stemmer;
 import ph.bohol.util.stemmer.StemmerParser;
 
 public class MainActivity extends AppCompatActivity
-implements OnQueryTextListener, OnSharedPreferenceChangeListener {
+implements OnQueryTextListener {
     static final String SEARCH_WORD = "ph.bohol.dictionaryapp.SEARCH_WORD";
     static final String ENTRY_ID = "ph.bohol.dictionaryapp.ENTRY_ID";
 
@@ -57,7 +56,6 @@ implements OnQueryTextListener, OnSharedPreferenceChangeListener {
         Log.d(TAG, "OnCreate");
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
         retrievePreferences(sharedPreferences);
         intializeStemmer();
 
@@ -226,8 +224,6 @@ implements OnQueryTextListener, OnSharedPreferenceChangeListener {
     @Override
     protected final void onPause() {
         super.onPause();
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        sharedPreferences.unregisterOnSharedPreferenceChangeListener(this);
     }
 
     @Override
@@ -235,7 +231,6 @@ implements OnQueryTextListener, OnSharedPreferenceChangeListener {
         super.onResume();
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         retrievePreferences(sharedPreferences);
-        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
     }
 
     @Override
@@ -262,11 +257,6 @@ implements OnQueryTextListener, OnSharedPreferenceChangeListener {
         // Already handled by the onQueryTextChange() handler, just close the search
         searchView.clearFocus();
         return true;
-    }
-
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        retrievePreferences(sharedPreferences);
     }
 
     private class PrepareCursorTask extends AsyncTask<String, Void, Cursor> {
