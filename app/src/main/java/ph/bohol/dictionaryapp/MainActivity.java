@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -61,6 +62,7 @@ implements OnQueryTextListener {
 
         listView = findViewById(R.id.listview);
         webView = findViewById(R.id.webview);
+        webView.setBackgroundColor(Color.DKGRAY);
 
         // Get searchWord after resume (e.g. after a rotation).
         if (savedInstanceState != null) {
@@ -112,8 +114,7 @@ implements OnQueryTextListener {
         }
         cursor = newCursor;
 
-        HeadCursorAdapter h = new HeadCursorAdapter(this, cursor);
-        listView.setAdapter(h);
+        listView.setAdapter(new HeadCursorAdapter(this, cursor));
 
         listView.setOnItemClickListener((parent, view, position, id) -> {
             cursor.moveToPosition(position);
@@ -182,8 +183,6 @@ implements OnQueryTextListener {
                 about.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 about.setTitle(R.string.about_cebuano_dictionary);
                 about.show();
-                break;
-            case R.id.help:
                 break;
             default:
                 break;
