@@ -62,6 +62,12 @@
         </span>
     </xsl:template>
 
+    <xsl:template match="asc">
+        <span class="asc">
+            <xsl:apply-templates/>
+        </span>
+    </xsl:template>
+
     <!--  Drop examples and verb codes in the compact presentation. -->
     <xsl:template match="eg | itype | pb"/>
 

@@ -38,6 +38,7 @@
                     .gramGrp {  }
                     .exp { color: #606060; }
                     .rm { font-style: normal; font-weight: normal; }
+                    .asc { font-variant: small-caps; text-transform: lowercase; }
 
                     <xsl:if test="$useNightMode = 'true'">
                         body { background-color: #272727; color: #FFFFFF;}
@@ -211,6 +212,12 @@
 
     <xsl:template match="r">
         <span class="rm">
+            <xsl:apply-templates/>
+        </span>
+    </xsl:template>
+
+    <xsl:template match="asc">
+        <span class="asc">
             <xsl:apply-templates/>
         </span>
     </xsl:template>

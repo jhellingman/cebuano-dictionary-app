@@ -44,6 +44,7 @@
                     .tr { background-color: #FFFF99; }
                     .expan { color: #6600CC; }
                     .pb { color: green; }
+                    .asc { font-variant: small-caps; text-transform: lowercase; }
                     
                 </style>
             </head>
@@ -222,6 +223,12 @@
 
     <xsl:template match="r">
         <span class="rm">
+            <xsl:apply-templates/>
+        </span>
+    </xsl:template>
+
+    <xsl:template match="asc">
+        <span class="asc">
             <xsl:apply-templates/>
         </span>
     </xsl:template>
