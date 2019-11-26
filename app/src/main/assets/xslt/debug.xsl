@@ -2,11 +2,7 @@
 
 <xsl:stylesheet
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-    xmlns:xs="http://www.w3.org/2001/XMLSchema"
-    xmlns:dc="http://purl.org/dc/elements/1.1/"
-    xmlns:local="http://localhost"
-    version="2.0"
-    exclude-result-prefixes="xs dc">
+    version="2.0">
 
     <xsl:output 
         method="html" 
@@ -25,52 +21,30 @@
                 <style type="text/css">
 
                     body { font-size: <xsl:value-of select="$fontSize"/>pt; }
-
                     .entry, .hom, .sense, .eg { margin: 5px; }
-
                     .entry { margin-top: 10px; }
-
                     .entry { margin-left: 10px; padding-left: 10px; }
-
                     .hom { margin-left: 10px; border-left: solid 4px #FF858B; padding-left: 10px; }
-
                     .noun { border-color: #8FFC84; }
-                    
                     .verb { border-color: #8EB4F9; }
-                    
                     .adjective { border-color: #FFFE86; }
-
                     .sense { margin-left: 10px; padding-left: 10px; }
-
                     .form { font-size: 110%; }
-
                     .eg { margin-left: 10px; padding-left: 10px; }
-
                     .eg { color: gray; font-size: 90% }
-                    
                     .eg i { font-style: italic }
-
                     .pos { font-size: 110%; color: red; }
-
                     .num { color: blue; }
-
                     .itype { }
-                    
                     .bio { font-style: italic; font-weight: bold; }
-                    
                     .tr { }
-                    
                     .xr { }
-                                        
                     .gramGrp { }
-                    
                     .rm { font-style: normal; font-weight: normal; }
-                    
                     .tr { background-color: #FFFF99; }
-                                       
                     .expan { color: #6600CC; }
-                    
                     .pb { color: green; }
+                    .asc { font-variant: small-caps; text-transform: lowercase; }
                     
                 </style>
             </head>
@@ -170,7 +144,7 @@
     <xsl:template match="bio">
         <span class="bio">
             <a>
-                <xsl:attribute name="href">http://www.google.com/search?q=<xsl:value-of select="translate(., ' ', '+')"/></xsl:attribute>
+                <xsl:attribute name="href">https://www.google.com/search?q=<xsl:value-of select="translate(., ' ', '+')"/></xsl:attribute>
                 <xsl:apply-templates/>
             </a>
         </span>
@@ -192,7 +166,7 @@
                 <xsl:when test="@target">
                     <a class="search">
                         <xsl:attribute name="href">
-                            <!-- TODO: hack to remove x and q encoding present in files. -->
+                            <!-- Remove x and q encoding present in files. -->
                             <xsl:text>search:</xsl:text><xsl:value-of select="substring-after(translate(@target, 'xq1234567890', ''), '#')"/>
                         </xsl:attribute>
                         <xsl:apply-templates />
@@ -253,6 +227,12 @@
         </span>
     </xsl:template>
 
+    <xsl:template match="asc">
+        <span class="asc">
+            <xsl:apply-templates/>
+        </span>
+    </xsl:template>
+
     <xsl:template match="ix">
         <i>
             <xsl:apply-templates/>
@@ -270,7 +250,6 @@
     </xsl:template>
     
     <!-- Discard unwanted stuff -->
-
     <xsl:template match="TEI.2|text|body|trans|div1|sc|corr|head|foreign|back|divGen|sic">
         <xsl:apply-templates/>
     </xsl:template>

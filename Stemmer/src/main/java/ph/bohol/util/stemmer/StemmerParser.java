@@ -83,7 +83,7 @@ public class StemmerParser extends DefaultHandler {
     }
 
     @Override
-    public final void endElement(final String s, final String s1, final String elementName) throws SAXException {
+    public final void endElement(final String s, final String s1, final String elementName) {
         if (elementName.equals("group")) {
             stemmer.addGroup(temporaryGroup);
             temporaryGroup = null;

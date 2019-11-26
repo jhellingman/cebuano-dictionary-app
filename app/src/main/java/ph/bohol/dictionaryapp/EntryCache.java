@@ -9,7 +9,7 @@ class EntryCache extends LinkedHashMap<Integer, Spanned> {
     private static final float LOAD_FACTOR = 1.1f;
     private final int capacity;
 
-    public EntryCache(final int newCapacity) {
+    EntryCache(final int newCapacity) {
         super(newCapacity + 1, LOAD_FACTOR, true);
         this.capacity = newCapacity;
     }

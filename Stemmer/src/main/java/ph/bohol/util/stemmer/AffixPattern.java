@@ -9,20 +9,18 @@ class AffixPattern {
     private String root;
     private String compiledPattern;
 
-    public AffixPattern() {
+    AffixPattern() { }
 
-    }
-
-    public AffixPattern(final String newPattern, final String newRoot) {
+    AffixPattern(final String newPattern, final String newRoot) {
         this.setPattern(newPattern);
         this.setRoot(newRoot);
     }
 
-    public final boolean applies(final String word) {
+    final boolean applies(final String word) {
         return word.matches(compiledPattern);
     }
 
-    public final String strip(final String word) {
+    final String strip(final String word) {
         if (word.matches(compiledPattern)) {
             return word.replaceAll(compiledPattern, root);
         } else {
@@ -56,14 +54,14 @@ class AffixPattern {
         Matcher matcher = constantPattern.matcher(pattern);
 
         int position = 0;
-        String result = "";
+        StringBuilder result = new StringBuilder();
         while (matcher.find()) {
-            result += pattern.substring(position, matcher.start());
-            result += constants.get(matcher.group(1));
+            result.append(pattern, position, matcher.start());
+            result.append(constants.get(matcher.group(1)));
             position = matcher.end();
         }
-        result += pattern.substring(position);
+        result.append(pattern.substring(position));
 
-        compiledPattern = result;
+        compiledPattern = result.toString();
     }
 }

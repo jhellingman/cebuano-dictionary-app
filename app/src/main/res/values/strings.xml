@@ -6,9 +6,7 @@
     <item name="databaseVersion" format="integer" type="string">1</item>
 
     <!-- Main Activity -->
-
     <string name="search_title">Search</string>
-
     <string name="action_settings">Settings</string>
     <string name="enter_word">Enter a Cebuano word</string>
     <string name="button_search">Search</string>
@@ -18,35 +16,34 @@
     <string name="app_logo">App Logo</string>
     
     <string name="main_entry">Main entry</string>
+    <string name="status_icon">Status icon</string>
+    <string name="entry_preview">Entry preview</string>
     <string name="sub_entry">Sub entry</string>
     <string name="reverse_lookup">Reverse lookup</string>
     <string name="derived_form">Derived form</string>
     <string name="cross_reference">Cross-reference</string>
     
     <!-- Search Activity -->
-    
     <string name="search_hint">Enter a word</string>
     
     <!-- Test Activity -->
-
     <string name="title_activity_test">Test Activity</string>
     <string name="test_activity">Test Activity</string>
 
     <!-- Help Activity -->
-
     <string name="help">Help</string>
     
     <!-- Show Entry Activity -->
-
     <string name="show_next_entry">Next Entry</string>
     <string name="show_previous_entry">Previous Entry</string>
     <string name="title_activity_show_entry">Show Entry</string>
     
     <string name="can_swipe_to_move_to_next_entry">You can swipe right-to-left for the next entry</string>
-    <string name="can_swipe_to_move_to_previous_entry">You can swipe left-to-right for the previous entry</string>   
-        
-    <!-- Preference Activity -->
+    <string name="can_swipe_to_move_to_previous_entry">You can swipe left-to-right for the previous entry</string>
+    <string name="reached_first_entry">You\'ve reached the first entry</string>
+    <string name="reached_last_entry">You\'ve reached the last entry</string>
 
+    <!-- Preference Activity -->
     <string name="preference_activity">Preferences</string>
     <string name="search">Search</string>
     <string name="search_summary">Way of searching the dictionary</string>
@@ -58,25 +55,26 @@
     <string name="presentation_traditional">Traditional</string>
     <string name="presentation_structural">Structural</string>
     <string name="presentation_debug">Debug</string>
-    <string name="fontsize_tiny">Tiny</string>
-    <string name="fontsize_small">Small</string>
-    <string name="fontsize_medium">Medium</string>
-    <string name="fontsize_large">Large</string>    
+    <string name="font_size_tiny">Tiny</string>
+    <string name="font_size_small">Small</string>
+    <string name="font_size_medium">Medium</string>
+    <string name="font_size_large">Large</string>
     <string name="use_stemming">Stemming</string>
     <string name="use_stemming_summary">Try to find roots of words entered</string>
     <string name="use_reverse_lookup">Reverse lookup</string>
-    <string name="use_reverse_lookup_summary">Search through English translations given</string>    
-    <string name="yes_no">Yes/No</string>
-    <string name="on_off">On/Off</string>
+    <string name="use_reverse_lookup_summary">Search through English translations given</string>
     <string name="expand_abbreviations">Expand abbreviations</string>
     <string name="expand_abbreviations_summary">Fully spell out the abbreviated forms used in the dictionary</string>
     <string name="presentation_style">Presentation style</string>
     <string name="presentation_style_summary">Selects the way entries are displayed</string>
-    <string name="font_size">Font size</string>
-    <string name="font_size_summary">Selects the font size</string>
-    <string name="reached_first_entry">You\'ve reached the first entry</string>
-    <string name="reached_last_entry">You\'ve reached the last entry</string>   
-    
+    <string name="night_mode">Night mode</string>
+    <string name="night_mode_summary">Show entries on a dark background</string>
+
+    <string name="font_size_for_search">Search results font size</string>
+    <string name="font_size_summary_for_search">Selects the font size in the list of results</string>
+    <string name="font_size">Presentation font size</string>
+    <string name="font_size_summary">Selects the font size for the presentation of entries</string>
+
     <string name="measure_units">Measurement units</string>
     <string name="measure_units_summary">Selects the units used for measured values</string>
     <string name="measure_original">Original (U.S.)</string>

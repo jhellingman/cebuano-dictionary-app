@@ -18,24 +18,29 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 public final class EntryTransformer {
-    public static final String STYLE_COMPACT = "compact";
-    public static final String STYLE_STRUCTURAL = "structural";
-    public static final String STYLE_TRADITIONAL = "traditional";
-    public static final String STYLE_DEBUG = "debug";
+
+    private static final String TAG = "EntryTransformer";
+    private static EntryTransformer instance = null;
+
+    static final String STYLE_COMPACT = "compact";
+    static final String STYLE_STRUCTURAL = "structural";
+    static final String STYLE_TRADITIONAL = "traditional";
+    static final String STYLE_DEBUG = "debug";
 
     private static final String XSLT_COMPACT = "xslt/compact.xsl";
     private static final String XSLT_STRUCTURAL = "xslt/structural.xsl";
     private static final String XSLT_TRADITIONAL = "xslt/typographical.xsl";
     private static final String XSLT_DEBUG = "xslt/debug.xsl";
 
+    private final Map<String, String> stylesheets = new HashMap<>();
+    private final Map<String, Transformer> transformers = new HashMap<>();
+
     private static final int DEFAULT_FONT_SIZE = 20;
+
     private int fontSize = DEFAULT_FONT_SIZE;
-    private static final String TAG = "EntryTransformer";
-    private static EntryTransformer instance = null;
-    private final Map<String, String> stylesheets = new HashMap<String, String>();
-    private final Map<String, Transformer> transformers = new HashMap<String, Transformer>();
-    private boolean expandAbbreviations = false;
+    private boolean expandAbbreviations = true;
     private boolean useMetric = false;
+    private boolean useNightMode = false;
 
     private final Context context;
 
@@ -48,7 +53,7 @@ public final class EntryTransformer {
         this.stylesheets.put(STYLE_DEBUG, XSLT_DEBUG);
     }
 
-    public static EntryTransformer getInstance(final Context context) {
+    static EntryTransformer getInstance(final Context context) {
         // Use the application context, which will ensure that you do not accidentally leak an Activity's context.
         // See this article for more information: http://bit.ly/6LRzfx
         if (instance == null) {
@@ -58,25 +63,17 @@ public final class EntryTransformer {
         return instance;
     }
 
-    public String transform(final String entry, final String presentationStyle) {
+    String transform(final String entry, final String presentationStyle) {
         try {
             Transformer transformer = getTransformer(presentationStyle);
-
             StringReader reader = new StringReader(entry);
             Source xmlSource = new StreamSource(reader);
-
             Writer stringWriter = new StringWriter();
             StreamResult streamResult = new StreamResult(stringWriter);
-
             transformer.transform(xmlSource, streamResult);
-
             return stringWriter.toString();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (TransformerException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        } catch (IOException | TransformerException e) {
+            Log.d(TAG, "Failed to transform entry.");
         }
         return "";
     }
@@ -99,7 +96,7 @@ public final class EntryTransformer {
         transformer.setParameter("useMetric", Boolean.toString(useMetric));
         transformer.setParameter("expandAbbreviations", Boolean.toString(expandAbbreviations));
         transformer.setParameter("fontSize", Integer.toString(fontSize));
-
+        transformer.setParameter("useNightMode", Boolean.toString(useNightMode));
         return transformer;
     }
 
@@ -115,7 +112,7 @@ public final class EntryTransformer {
         return expandAbbreviations;
     }
 
-    public void setExpandAbbreviations(final boolean newExpandAbbreviations) {
+    void setExpandAbbreviations(final boolean newExpandAbbreviations) {
         this.expandAbbreviations = newExpandAbbreviations;
     }
 
@@ -123,7 +120,7 @@ public final class EntryTransformer {
         return useMetric;
     }
 
-    public void setUseMetric(final boolean newUseMetric) {
+    void setUseMetric(final boolean newUseMetric) {
         this.useMetric = newUseMetric;
     }
 
@@ -131,7 +128,11 @@ public final class EntryTransformer {
         return fontSize;
     }
 
-    public void setFontSize(final int newFontSize) {
+    void setFontSize(final int newFontSize) {
         this.fontSize = newFontSize;
+    }
+
+    void setUseNightMode(final boolean newUseNightMode) {
+        this.useNightMode = newUseNightMode;
     }
 }

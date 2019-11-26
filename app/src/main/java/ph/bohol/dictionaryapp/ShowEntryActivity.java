@@ -3,11 +3,11 @@ package ph.bohol.dictionaryapp;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
@@ -20,8 +20,15 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
-public class ShowEntryActivity extends Activity
-        implements OnSharedPreferenceChangeListener {
+import static ph.bohol.dictionaryapp.DictionaryPreferenceActivity.KEY_EXPAND_ABBREVIATIONS;
+import static ph.bohol.dictionaryapp.DictionaryPreferenceActivity.KEY_MEASURE_UNITS;
+import static ph.bohol.dictionaryapp.DictionaryPreferenceActivity.KEY_NIGHT_MODE;
+import static ph.bohol.dictionaryapp.DictionaryPreferenceActivity.KEY_PRESENTATION_FONT_SIZE;
+import static ph.bohol.dictionaryapp.DictionaryPreferenceActivity.KEY_PRESENTATION_STYLE;
+import static ph.bohol.dictionaryapp.DictionaryPreferenceActivity.VALUE_MEASURE_METRIC;
+import static ph.bohol.dictionaryapp.DictionaryPreferenceActivity.VALUE_MEASURE_ORIGINAL;
+
+public class ShowEntryActivity extends AppCompatActivity {
     private static final int DEFAULT_FONT_SIZE = 20;
     private int fontSize = DEFAULT_FONT_SIZE;
     private static final int RESULT_SETTINGS = 1;
@@ -32,11 +39,15 @@ public class ShowEntryActivity extends Activity
     private static final String TAG = "ShowEntryActivity";
     private static final String SEARCH_URL = "search:";
     private int entryId;
+
+    // Preferences
     private boolean expandAbbreviations = false;
     private boolean useMetric = false;
+    private boolean useNightMode = true;
+    private String presentationStyle = EntryTransformer.STYLE_TRADITIONAL;
+
     private boolean givenSwipeNextHint = false;
     private boolean givenSwipePreviousHint = false;
-    private String presentationStyle = EntryTransformer.STYLE_TRADITIONAL;
     private GestureDetector gestureDetector;
     private View.OnTouchListener gestureListener;
 
@@ -49,17 +60,11 @@ public class ShowEntryActivity extends Activity
 
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
 
-        // Show the Up button in the action bar.
-        setupActionBar();
-
         gestureDetector = new GestureDetector(this, new MyGestureDetector());
-        gestureListener = new View.OnTouchListener() {
-            public boolean onTouch(final View view, final MotionEvent event) {
-                return gestureDetector.onTouchEvent(event);
-            }
-        };
+        gestureListener = (view, event) -> gestureDetector.onTouchEvent(event);
 
-        retrievePreferences();
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        retrievePreferences(sharedPreferences);
 
         // Get entryId after resume (e.g. after a rotation).
         if (savedInstanceState != null) {
@@ -80,8 +85,7 @@ public class ShowEntryActivity extends Activity
 
     private void showEntry() {
         DictionaryDatabase database = DictionaryDatabase.getInstance(this);
-        Cursor cursor = database.getEntry(entryId);
-        try {
+        try (Cursor cursor = database.getEntry(entryId)) {
             String entry = cursor.getString(cursor.getColumnIndex(DictionaryDatabase.ENTRY_ENTRY));
             String head = cursor.getString(cursor.getColumnIndex(DictionaryDatabase.ENTRY_HEAD));
             setTitle(head);
@@ -89,7 +93,7 @@ public class ShowEntryActivity extends Activity
             String htmlEntry = transformEntry(entry);
 
             if (htmlEntry != null) {
-                WebView webView = (WebView) this.findViewById(R.id.webViewEntry);
+                WebView webView = this.findViewById(R.id.webViewEntry);
                 if (webView != null) {
                     webView.setWebViewClient(new WebViewClient() {
                         @Override
@@ -117,8 +121,6 @@ public class ShowEntryActivity extends Activity
                     webView.setOnTouchListener(gestureListener);
                 }
             }
-        } finally {
-            cursor.close();
         }
     }
 
@@ -129,27 +131,16 @@ public class ShowEntryActivity extends Activity
         entryTransformer.setExpandAbbreviations(expandAbbreviations);
         entryTransformer.setFontSize(fontSize);
         entryTransformer.setUseMetric(useMetric);
+        entryTransformer.setUseNightMode(useNightMode);
         return entryTransformer.transform(wrappedEntry, presentationStyle);
     }
 
-    private void retrievePreferences() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-
-        expandAbbreviations = preferences.getBoolean(DictionaryPreferenceActivity.KEY_EXPAND_ABBREVIATIONS, false);
-        fontSize = Integer.parseInt(preferences.getString(
-                DictionaryPreferenceActivity.KEY_PRESENTATION_FONT_SIZE, "20"));
-        presentationStyle = preferences.getString(
-                DictionaryPreferenceActivity.KEY_PRESENTATION_STYLE, EntryTransformer.STYLE_TRADITIONAL);
-        useMetric = preferences.getString(DictionaryPreferenceActivity.KEY_MEASURE_UNITS,
-                DictionaryPreferenceActivity.VALUE_MEASURE_ORIGINAL).
-                equals(DictionaryPreferenceActivity.VALUE_MEASURE_METRIC);
-    }
-
-    /**
-     * Set up the {@link android.app.ActionBar}.
-     */
-    private void setupActionBar() {
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+    private void retrievePreferences(SharedPreferences sharedPreferences) {
+        expandAbbreviations = sharedPreferences.getBoolean(KEY_EXPAND_ABBREVIATIONS, true);
+        fontSize = Integer.parseInt(sharedPreferences.getString(KEY_PRESENTATION_FONT_SIZE, "20"));
+        presentationStyle = sharedPreferences.getString(KEY_PRESENTATION_STYLE, EntryTransformer.STYLE_TRADITIONAL);
+        useMetric = VALUE_MEASURE_METRIC.equals(sharedPreferences.getString(KEY_MEASURE_UNITS, VALUE_MEASURE_ORIGINAL));
+        useNightMode = sharedPreferences.getBoolean(KEY_NIGHT_MODE, true);
     }
 
     @Override
@@ -230,23 +221,17 @@ public class ShowEntryActivity extends Activity
         showEntry();
     }
 
-    // TODO / DONE use OnSharedPreferenceChangeListener to detect preference changes.
     @Override
     protected final void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        // TODO / DONE use OnSharedPreferenceChangeListener to detect preference changes.
         if (resultCode == Activity.RESULT_CANCELED && !(requestCode == RESULT_SETTINGS)) {
             return;
         }
-
-        switch (requestCode) {
-            case RESULT_SETTINGS:
-                retrievePreferences();
-                showEntry();
-                break;
-            default:
-                break;
+        if (requestCode == RESULT_SETTINGS) {
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+            retrievePreferences(sharedPreferences);
+            showEntry();
         }
     }
 
@@ -254,34 +239,12 @@ public class ShowEntryActivity extends Activity
     protected final void onResume() {
         super.onResume();
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-
-        retrievePreferences();
-
-        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
+        retrievePreferences(sharedPreferences);
     }
 
     @Override
     protected final void onPause() {
         super.onPause();
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        sharedPreferences.unregisterOnSharedPreferenceChangeListener(this);
-    }
-
-    @Override
-    public final void onSharedPreferenceChanged(final SharedPreferences preferences, final String key) {
-        if (key.equals(DictionaryPreferenceActivity.KEY_EXPAND_ABBREVIATIONS)) {
-            expandAbbreviations = preferences.getBoolean(DictionaryPreferenceActivity.KEY_EXPAND_ABBREVIATIONS, false);
-        } else if (key.equals(DictionaryPreferenceActivity.KEY_PRESENTATION_FONT_SIZE)) {
-            fontSize = Integer.parseInt(preferences.getString(DictionaryPreferenceActivity.KEY_PRESENTATION_FONT_SIZE,
-                    "20"));
-        } else if (key.equals(DictionaryPreferenceActivity.KEY_PRESENTATION_STYLE)) {
-            presentationStyle = preferences.getString(DictionaryPreferenceActivity.KEY_PRESENTATION_STYLE,
-                    EntryTransformer.STYLE_TRADITIONAL);
-        } else if (key.equals(DictionaryPreferenceActivity.KEY_MEASURE_UNITS)) {
-            useMetric = preferences.getString(DictionaryPreferenceActivity.KEY_MEASURE_UNITS,
-                    DictionaryPreferenceActivity.VALUE_MEASURE_ORIGINAL).equals(
-                    DictionaryPreferenceActivity.VALUE_MEASURE_METRIC);
-        }
     }
 
     private class MyGestureDetector extends SimpleOnGestureListener {

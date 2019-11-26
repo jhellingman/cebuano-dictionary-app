@@ -7,7 +7,7 @@ class RootCache extends LinkedHashMap<String, Boolean> {
     private static final float LOAD_FACTOR = 1.1f;
     private final int capacity;
 
-    public RootCache(final int newCapacity) {
+    RootCache(final int newCapacity) {
         super(newCapacity + 1, LOAD_FACTOR, true);
         this.capacity = newCapacity;
     }

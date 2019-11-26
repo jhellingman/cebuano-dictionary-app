@@ -5,18 +5,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.webkit.WebView;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.SearchView.OnQueryTextListener;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,8 +29,8 @@ import ph.bohol.util.stemmer.Derivation;
 import ph.bohol.util.stemmer.Stemmer;
 import ph.bohol.util.stemmer.StemmerParser;
 
-public class MainActivity extends Activity
-        implements SearchView.OnQueryTextListener {
+public class MainActivity extends AppCompatActivity
+implements OnQueryTextListener {
     static final String SEARCH_WORD = "ph.bohol.dictionaryapp.SEARCH_WORD";
     static final String ENTRY_ID = "ph.bohol.dictionaryapp.ENTRY_ID";
 
@@ -37,11 +39,11 @@ public class MainActivity extends Activity
     private static final int RESULT_SHOW_ENTRY = 2;
     private static final String ASSET_STEMMER_CEBUANO = "xml/stemmerCebuano.xml";
 
-    private SearchView searchView;
+    private SearchView searchView = null;
     private ListView listView = null;
     private WebView webView = null;
     private Cursor cursor = null;
-    private String searchWord;
+    private String searchWord = null;
     private Stemmer stemmer = null;
     private boolean reverseLookup = false;
     private boolean useStemming = false;
@@ -54,11 +56,13 @@ public class MainActivity extends Activity
 
         Log.d(TAG, "OnCreate");
 
-        retrievePreferences();
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        retrievePreferences(sharedPreferences);
         intializeStemmer();
 
-        listView = (ListView) findViewById(R.id.listview);
-        webView = (WebView) findViewById(R.id.webview);
+        listView = findViewById(R.id.listview);
+        webView = findViewById(R.id.webview);
+        webView.setBackgroundColor(Color.DKGRAY);
 
         // Get searchWord after resume (e.g. after a rotation).
         if (savedInstanceState != null) {
@@ -110,35 +114,30 @@ public class MainActivity extends Activity
         }
         cursor = newCursor;
 
-        HeadCursorAdapter h = new HeadCursorAdapter(this, cursor);
-        listView.setAdapter(h);
+        listView.setAdapter(new HeadCursorAdapter(this, cursor));
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(final AdapterView<?> parent, final View view, final int position, final long id) {
-                cursor.moveToPosition(position);
-                String entryId = cursor.getString(cursor.getColumnIndex(DictionaryDatabase.HEAD_ENTRY_ID));
+        listView.setOnItemClickListener((parent, view, position, id) -> {
+            cursor.moveToPosition(position);
+            String entryId = cursor.getString(cursor.getColumnIndex(DictionaryDatabase.HEAD_ENTRY_ID));
 
-                // Result will be search word if cross-reference is followed.
-                Intent intent = new Intent(MainActivity.this, ShowEntryActivity.class);
-                intent.putExtra(ENTRY_ID, entryId);
-                startActivityForResult(intent, RESULT_SHOW_ENTRY);
-            }
+            // Result will be search word if cross-reference is followed.
+            Intent intent = new Intent(MainActivity.this, ShowEntryActivity.class);
+            intent.putExtra(ENTRY_ID, entryId);
+            startActivityForResult(intent, RESULT_SHOW_ENTRY);
         });
     }
 
-    private void retrievePreferences() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        reverseLookup = preferences.getBoolean(DictionaryPreferenceActivity.KEY_REVERSE_LOOKUP, false);
-        useStemming = preferences.getBoolean(DictionaryPreferenceActivity.KEY_USE_STEMMING, false);
-        lastSearchWord = preferences.getString(DictionaryPreferenceActivity.KEY_LAST_SEARCHWORD, "");
+    private void retrievePreferences(SharedPreferences sharedPreferences) {
+        reverseLookup = sharedPreferences.getBoolean(DictionaryPreferenceActivity.KEY_REVERSE_LOOKUP, false);
+        useStemming = sharedPreferences.getBoolean(DictionaryPreferenceActivity.KEY_USE_STEMMING, false);
+        lastSearchWord = sharedPreferences.getString(DictionaryPreferenceActivity.KEY_LAST_SEARCH_WORD, "");
     }
 
     private void saveSearchWord() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(DictionaryPreferenceActivity.KEY_LAST_SEARCHWORD, searchWord);
-        editor.commit();
+        editor.putString(DictionaryPreferenceActivity.KEY_LAST_SEARCH_WORD, searchWord);
+        editor.apply();
     }
 
     private void intializeStemmer() {
@@ -185,8 +184,6 @@ public class MainActivity extends Activity
                 about.setTitle(R.string.about_cebuano_dictionary);
                 about.show();
                 break;
-            case R.id.help:
-                break;
             default:
                 break;
         }
@@ -197,7 +194,6 @@ public class MainActivity extends Activity
     protected final void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        // TODO use OnSharedPreferenceChangeListener to detect preference changes.
         if (resultCode == Activity.RESULT_CANCELED && !(requestCode == RESULT_SETTINGS)) {
             return;
         }
@@ -215,12 +211,25 @@ public class MainActivity extends Activity
                 }
                 break;
             case RESULT_SETTINGS:
-                retrievePreferences();
+                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+                retrievePreferences(sharedPreferences);
                 update();
                 break;
             default:
                 break;
         }
+    }
+
+    @Override
+    protected final void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected final void onResume() {
+        super.onResume();
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        retrievePreferences(sharedPreferences);
     }
 
     @Override

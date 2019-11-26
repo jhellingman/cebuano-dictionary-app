@@ -7,14 +7,14 @@ public class Affix {
     private String form;
     private String label;
     private String rootType;
-    private final LinkedList<AffixPattern> patterns = new LinkedList<AffixPattern>();
+    private final LinkedList<AffixPattern> patterns = new LinkedList<>();
 
     /**
      * Add a pattern to the list of patterns for this Affix.
      *
      * @param pattern the pattern to be added.
      */
-    public final void addPattern(final AffixPattern pattern) {
+    final void addPattern(final AffixPattern pattern) {
         patterns.addLast(pattern);
     }
 
@@ -30,7 +30,7 @@ public class Affix {
         return label;
     }
 
-    public final void setLabel(final String newLabel) {
+    final void setLabel(final String newLabel) {
         this.label = newLabel;
     }
 
@@ -64,8 +64,8 @@ public class Affix {
         return null;
     }
 
-    public final LinkedList<String> rootCandidates(final String word) {
-        LinkedList<String> rootCandidates = new LinkedList<String>();
+    final LinkedList<String> rootCandidates(final String word) {
+        LinkedList<String> rootCandidates = new LinkedList<>();
         for (AffixPattern pattern : patterns) {
             if (pattern.applies(word)) {
                 rootCandidates.add(pattern.strip(word));
@@ -75,19 +75,19 @@ public class Affix {
     }
 
     public final String toString() {
-        String result = "<affix form='" + form + "' label='" + label + "'";
+        StringBuilder result = new StringBuilder("<affix form='" + form + "' label='" + label + "'");
 
         if (rootType != null && !rootType.isEmpty()) {
-            result += "rootType='" + rootType + "'";
+            result.append("rootType='").append(rootType).append("'");
         }
-        result += ">\n";
+        result.append(">\n");
 
         for (AffixPattern pattern : patterns) {
-            result += pattern.toString();
+            result.append(pattern.toString());
         }
 
-        result += ("</affix>\n");
-        return result;
+        result.append("</affix>\n");
+        return result.toString();
     }
 
     final void compile(final Map<String, String> constants) {
@@ -100,7 +100,7 @@ public class Affix {
         return rootType;
     }
 
-    public final void setRootType(final String newRootType) {
+    final void setRootType(final String newRootType) {
         this.rootType = newRootType;
     }
 }

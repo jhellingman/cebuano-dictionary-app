@@ -2,11 +2,7 @@
 
 <xsl:stylesheet
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-    xmlns:xs="http://www.w3.org/2001/XMLSchema"
-    xmlns:dc="http://purl.org/dc/elements/1.1/"
-    xmlns:local="http://localhost"
-    version="2.0"
-    exclude-result-prefixes="xs dc">
+    version="2.0">
 
     <xsl:output 
         method="html" 
@@ -20,6 +16,7 @@
     <xsl:param name="fontSize" select="'20'"/>
     <xsl:param name="expandAbbreviations" select="'false'"/>
     <xsl:param name="useMetric" select="'false'"/>
+    <xsl:param name="useNightMode" select="'false'"/>
 
     <xsl:template match="dictionary">
         <html>
@@ -29,30 +26,27 @@
                 <style type="text/css">
 
                     body { font-size: <xsl:value-of select="$fontSize"/>pt; }
-
                     .form { font-size: 110%; }
-
-                    .eg { font-size: 90%; color: gray; }
-                    
-                    .eg i {  font-style: italic }
-
+                    .eg { font-size: 90%; color: #606060; }
+                    .eg i { font-style: italic }
                     .pos { font-size: 110%; color: red; }
-
                     .num { font-weight: bold; color: blue; }
-
                     .itype { }
-
                     .bio { font-style: italic; font-weight: bold; }
-                    
                     .tr {  }
-                    
                     .xr {  }
-                    
                     .gramGrp {  }
-                    
-                    .exp { color: grey; }
-
+                    .exp { color: #606060; }
                     .rm { font-style: normal; font-weight: normal; }
+                    .asc { font-variant: small-caps; text-transform: lowercase; }
+
+                    <xsl:if test="$useNightMode = 'true'">
+                        body { background-color: #272727; color: #FFFFFF;}
+                        .pos { color: #ff6666; }
+                        .num { color: #00ccff; }
+                        a { color: #00ccff; }
+                        .exp, .eg { color: #c0c0c0; }
+                    </xsl:if>
 
                 </style>
             </head>
@@ -62,38 +56,7 @@
         </html>
     </xsl:template>
 
-    <xsl:function name="local:get-page-url" as="xs:string">
-        <xsl:param name="page" as="xs:string"/>
-        <xsl:variable name="pageNumber" select="number($page)"/>
-
-        <xsl:choose>
-            <xsl:when test="$page = '537a'">
-                <xsl:sequence select="'http://seapdatapapers.library.cornell.edu/cgi/t/text/pageviewer-idx?c=seap&amp;cc=seap&amp;idno=seap085b&amp;node=seap085b%3A11&amp;view=image&amp;seq=7&amp;size=200'"/>
-            </xsl:when>
-            <xsl:when test="$pageNumber &lt; 538">
-                <xsl:sequence select="concat(concat(
-                    'http://seapdatapapers.library.cornell.edu/cgi/t/text/pageviewer-idx?c=seap&amp;cc=seap&amp;idno=seap085a&amp;node=seap085a%3A11&amp;view=image&amp;seq=', 
-                    $pageNumber + 24),
-                    '&amp;size=200')"/>
-            </xsl:when>
-            <xsl:when test="$pageNumber &gt; 537">
-                <xsl:sequence select="concat(concat(
-                    'http://seapdatapapers.library.cornell.edu/cgi/t/text/pageviewer-idx?c=seap&amp;cc=seap&amp;idno=seap085b&amp;node=seap085b%3A11&amp;view=image&amp;seq=', 
-                    $pageNumber - 530),
-                    '&amp;size=200')"/>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:text></xsl:text>
-            </xsl:otherwise>
-        </xsl:choose>
-    </xsl:function>
-
     <xsl:template match="entry">
-        <!-- 
-            <xsl:if test="parent::dictionary">
-                <div class="page-ref"><a href="{local:get-page-url(@page)}"><xsl:value-of select="@page"/></a></div>
-            </xsl:if>
-        -->
         <span class="entry">
             <xsl:apply-templates/>
         </span>
@@ -178,7 +141,7 @@
     <xsl:template match="bio">
         <span class="bio">
             <a>
-                <xsl:attribute name="href">http://www.google.com/search?q=<xsl:value-of select="translate(., ' ', '+')"/></xsl:attribute>
+                <xsl:attribute name="href">https://www.google.com/search?q=<xsl:value-of select="translate(., ' ', '+')"/></xsl:attribute>
                 <xsl:apply-templates/>
             </a>
         </span>
@@ -200,7 +163,7 @@
                 <xsl:when test="@target">
                     <a class="search">
                         <xsl:attribute name="href">
-                            <!-- TODO: hack to remove x and q encoding present in files. -->
+                            <!-- Remove x and q encoding present in files. -->
                             <xsl:text>search:</xsl:text><xsl:value-of select="substring-after(translate(@target, 'xq1234567890', ''), '#')"/>
                         </xsl:attribute>
                         <xsl:apply-templates />
@@ -253,6 +216,12 @@
         </span>
     </xsl:template>
 
+    <xsl:template match="asc">
+        <span class="asc">
+            <xsl:apply-templates/>
+        </span>
+    </xsl:template>
+
     <xsl:template match="ix">
         <i>
             <xsl:apply-templates/>
@@ -282,7 +251,6 @@
     </xsl:template>
     
     <!-- Discard unwanted stuff -->
-
     <xsl:template match="TEI.2|text|body|trans|div1|sc|corr|head|foreign|back|divGen|sic">
         <xsl:apply-templates/>
     </xsl:template>

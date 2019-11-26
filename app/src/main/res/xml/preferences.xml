@@ -3,34 +3,36 @@
 
     <PreferenceCategory
         android:summary="@string/search_summary"
-        android:title="@string/search" >
+        android:title="@string/search">
         
         <ListPreference
             android:entries="@array/fontSizeOptions"
             android:entryValues="@array/fontSizeValues"
             android:key="search_font_size"
-            android:summary="@string/font_size_summary"
-            android:title="@string/font_size" 
-            android:defaultValue="20"
-            />
+            android:summary="@string/font_size_summary_for_search"
+            android:title="@string/font_size_for_search"
+            android:defaultValue="20"/>
         
         <CheckBoxPreference
             android:key="show_preview"
             android:summary="@string/show_preview_summary"
-            android:title="@string/show_preview" 
+            android:title="@string/show_preview"
+            android:checked="true"
             android:defaultValue="true"/>
         
         <!--<CheckBoxPreference
             android:key="use_stemming"
             android:summary="@string/use_stemming_summary"
-            android:title="@string/use_stemming" 
+            android:title="@string/use_stemming"
+            android:checked="false"
             android:defaultValue="true"/>-->
         
         <CheckBoxPreference
             android:key="reverse_lookup"
             android:summary="@string/use_reverse_lookup_summary"
-            android:title="@string/use_reverse_lookup" 
-            android:defaultValue="false"/>        
+            android:title="@string/use_reverse_lookup"
+            android:checked="false"
+            android:defaultValue="false"/>
            
     </PreferenceCategory>
     
@@ -49,7 +51,8 @@
         <CheckBoxPreference
             android:key="expand_abbreviations"
             android:summary="@string/expand_abbreviations_summary"
-            android:title="@string/expand_abbreviations" 
+            android:title="@string/expand_abbreviations"
+            android:checked="true"
             android:defaultValue="true"/>
 
         <ListPreference
@@ -58,7 +61,7 @@
             android:key="presentation_style"
             android:summary="@string/presentation_style_summary"
             android:title="@string/presentation_style" 
-            android:defaultValue="structural"/>
+            android:defaultValue="traditional"/>
         
         <ListPreference
             android:entries="@array/measureOptions"
@@ -66,9 +69,15 @@
             android:key="measure_units"
             android:summary="@string/measure_units_summary"
             android:title="@string/measure_units" 
-            android:defaultValue="original"
-            />
-        
+            android:defaultValue="original"/>
+
+        <CheckBoxPreference
+            android:key="night_mode"
+            android:summary="@string/night_mode_summary"
+            android:title="@string/night_mode"
+            android:checked="true"
+            android:defaultValue="true"/>
+
     </PreferenceCategory>
 
 </PreferenceScreen>
