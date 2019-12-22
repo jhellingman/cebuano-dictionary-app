@@ -48,3 +48,11 @@ Thumbs.db
 .idea/tasks.xml
 .idea/datasources.xml
 .idea/dataSources.ids
+.idea/assetWizardSettings.xml
+.idea/caches/build_file_checksums.ser
+.idea/caches/gradle_models.ser
+.idea/codeStyles/Project.xml
+.idea/dictionaries/Jeroen.xml
+.idea/runConfigurations.xml
+app/debug/output.json
+app/release/output.json
