@@ -159,51 +159,42 @@ public class ShowEntryActivity extends AppCompatActivity {
 
     @Override
     public final boolean onOptionsItemSelected(final MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                // This ID represents the Home or Up button. In the case of this
-                // activity, the Up button is shown. Use NavUtils to allow users
-                // to navigate up one level in the application structure. For
-                // more details, see the Navigation pattern on Android Design:
-                //
-                // http://developer.android.com/design/patterns/navigation.html#up-vs-back
-                //
-                // NavUtils.navigateUpFromSameTask(this);
-                finish();
-                return true;
-
-            case R.id.action_next:
-                if (!givenSwipeNextHint) {
-                    Toast.makeText(this, getResources().getString(R.string.can_swipe_to_move_to_next_entry),
-                            Toast.LENGTH_SHORT).show();
-                    givenSwipeNextHint = true;
-                }
-                moveToNextEntry();
-                break;
-
-            case R.id.action_previous:
-                if (!givenSwipePreviousHint) {
-                    Toast.makeText(this, getResources().getString(R.string.can_swipe_to_move_to_previous_entry),
-                            Toast.LENGTH_SHORT).show();
-                    givenSwipePreviousHint = true;
-                }
-                moveToPreviousEntry();
-                break;
-
-            case R.id.action_settings:
-                Intent i = new Intent(this, DictionaryPreferenceActivity.class);
-                startActivityForResult(i, RESULT_SETTINGS);
-                break;
-
-            case R.id.about:
-                AboutDialog about = new AboutDialog(this);
-                about.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                about.setTitle(R.string.about_cebuano_dictionary);
-                about.show();
-                break;
-
-            default:
-                break;
+        int itemId = item.getItemId();
+        
+        // If-else tree instead of switch http://tools.android.com/tips/non-constant-fields
+        if (itemId == android.R.id.home) {
+            // This ID represents the Home or Up button. In the case of this
+            // activity, the Up button is shown. Use NavUtils to allow users
+            // to navigate up one level in the application structure. For
+            // more details, see the Navigation pattern on Android Design:
+            //
+            // http://developer.android.com/design/patterns/navigation.html#up-vs-back
+            //
+            // NavUtils.navigateUpFromSameTask(this);
+            finish();
+            return true;
+        } else if (itemId == R.id.action_next) {
+            if (!givenSwipeNextHint) {
+                Toast.makeText(this, getResources().getString(R.string.can_swipe_to_move_to_next_entry),
+                        Toast.LENGTH_SHORT).show();
+                givenSwipeNextHint = true;
+            }
+            moveToNextEntry();
+        } else if (itemId == R.id.action_previous) {
+            if (!givenSwipePreviousHint) {
+                Toast.makeText(this, getResources().getString(R.string.can_swipe_to_move_to_previous_entry),
+                        Toast.LENGTH_SHORT).show();
+                givenSwipePreviousHint = true;
+            }
+            moveToPreviousEntry();
+        } else if (itemId == R.id.action_settings) {
+            Intent i = new Intent(this, DictionaryPreferenceActivity.class);
+            startActivityForResult(i, RESULT_SETTINGS);
+        } else if (itemId == R.id.about) {
+            AboutDialog about = new AboutDialog(this);
+            about.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            about.setTitle(R.string.about_cebuano_dictionary);
+            about.show();
         }
         return super.onOptionsItemSelected(item);
     }
