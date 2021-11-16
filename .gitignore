@@ -33,6 +33,7 @@ gen/
 
 # Ignore gradle files
 .gradle/
+gradle/
 gradlew
 gradlew.bat
 build/
