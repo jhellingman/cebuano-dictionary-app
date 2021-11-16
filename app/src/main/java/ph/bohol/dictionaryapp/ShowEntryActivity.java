@@ -7,7 +7,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
@@ -86,8 +86,15 @@ public class ShowEntryActivity extends AppCompatActivity {
     private void showEntry() {
         DictionaryDatabase database = DictionaryDatabase.getInstance(this);
         try (Cursor cursor = database.getEntry(entryId)) {
-            String entry = cursor.getString(cursor.getColumnIndex(DictionaryDatabase.ENTRY_ENTRY));
-            String head = cursor.getString(cursor.getColumnIndex(DictionaryDatabase.ENTRY_HEAD));
+            int entryIndex = cursor.getColumnIndex(DictionaryDatabase.ENTRY_ENTRY);
+            int headIndex = cursor.getColumnIndex(DictionaryDatabase.ENTRY_HEAD);
+            if (entryIndex < 0 && headIndex < 0) {
+                setTitle("ERROR: no columns found");
+                return;
+            }
+            String entry = cursor.getString(entryIndex);
+            String head = cursor.getString(headIndex);
+
             setTitle(head);
 
             String htmlEntry = transformEntry(entry);
@@ -205,7 +212,7 @@ public class ShowEntryActivity extends AppCompatActivity {
         DictionaryDatabase database = DictionaryDatabase.getInstance(this);
         int newEntryId = database.getPreviousEntryId(entryId);
         if (newEntryId == entryId) {
-            Toast.makeText(this, getResources().getString(R.string.reached_first_entry), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.reached_first_entry), Toast.LENGTH_SHORT).show();
         }
         entryId = newEntryId;
         showEntry();
@@ -215,7 +222,7 @@ public class ShowEntryActivity extends AppCompatActivity {
         DictionaryDatabase database = DictionaryDatabase.getInstance(this);
         int newEntryId = database.getNextEntryId(entryId);
         if (newEntryId == entryId) {
-            Toast.makeText(this, getResources().getString(R.string.reached_last_entry), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.reached_last_entry), Toast.LENGTH_SHORT).show();
         }
         entryId = newEntryId;
         showEntry();

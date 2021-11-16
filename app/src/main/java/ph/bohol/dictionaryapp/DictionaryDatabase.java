@@ -187,7 +187,9 @@ public final class DictionaryDatabase extends SQLiteAssetHelper
 
     private String getEntryHtml(final int entryId) {
         Cursor cursor = getEntry(entryId);
-        String entryXml = cursor.getString(cursor.getColumnIndex(DictionaryDatabase.ENTRY_ENTRY));
+        int entryIndex = cursor.getColumnIndex(DictionaryDatabase.ENTRY_ENTRY);
+        if (entryIndex < 0) return ""; // This is an error
+        String entryXml = cursor.getString(entryIndex);
         cursor.close();
         return EntryTransformer.getInstance(context).transform(entryXml, EntryTransformer.STYLE_COMPACT);
     }
@@ -226,7 +228,9 @@ public final class DictionaryDatabase extends SQLiteAssetHelper
                 return entryId;
             }
             cursor.moveToFirst();
-            return cursor.getInt(cursor.getColumnIndex(ENTRY_ID));
+            int entryIndex = cursor.getColumnIndex(ENTRY_ID);
+            if (entryIndex < 0) return entryId; // This is an error
+            return cursor.getInt(entryIndex);
         }
     }
 
@@ -246,7 +250,9 @@ public final class DictionaryDatabase extends SQLiteAssetHelper
                 return entryId;
             }
             cursor.moveToFirst();
-            return cursor.getInt(cursor.getColumnIndex(ENTRY_ID));
+            int entryIndex = cursor.getColumnIndex(ENTRY_ID);
+            if (entryIndex < 0) return entryId; // This is an error
+            return cursor.getInt(entryIndex);
         }
     }
 }
