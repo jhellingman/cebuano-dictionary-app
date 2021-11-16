@@ -88,8 +88,8 @@ public class ShowEntryActivity extends AppCompatActivity {
         try (Cursor cursor = database.getEntry(entryId)) {
             int entryIndex = cursor.getColumnIndex(DictionaryDatabase.ENTRY_ENTRY);
             int headIndex = cursor.getColumnIndex(DictionaryDatabase.ENTRY_HEAD);
-            if (entryIndex < 0 && headIndex < 0) {
-                setTitle("ERROR: no columns found");
+            if (entryIndex < 0 || headIndex < 0) {
+                setTitle("ERROR: no entry or head column found");
                 return;
             }
             String entry = cursor.getString(entryIndex);
