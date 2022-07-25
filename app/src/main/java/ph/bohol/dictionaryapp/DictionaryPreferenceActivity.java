@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 // See http://stackoverflow.com/questions/531427/ for OnSharedPreferenceChangeListener
 

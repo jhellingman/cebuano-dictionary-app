@@ -1,8 +1,15 @@
+*.iml
+/.idea
+
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
 app/build/
 local.properties
-.gradle/
-.idea/libraries/
-.idea/workspace.xml
+#.idea/libraries/
+#.idea/workspace.xml
 app/app-release.apk
 app/libs/android-sqlite-asset-helper.jar
 
@@ -26,6 +33,9 @@ gen/
 
 # Ignore gradle files
 .gradle/
+gradle/
+gradlew
+gradlew.bat
 build/
 
 # Local configuration file (sdk path, etc)
@@ -44,7 +54,7 @@ proguard/
 Thumbs.db
 
 # Intellij IDEA (see https://intellij-support.jetbrains.com/entries/23393067)
-.idea/workspace.xml
-.idea/tasks.xml
-.idea/datasources.xml
-.idea/dataSources.ids
+#.idea/workspace.xml
+#.idea/tasks.xml
+#.idea/datasources.xml
+#.idea/dataSources.ids

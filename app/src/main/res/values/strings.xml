@@ -3,7 +3,7 @@
 
     <string name="app_name">Cebuano Dictionary</string>
 
-    <item name="databaseVersion" format="integer" type="string">1</item>
+    <item name="databaseVersion" format="integer" type="string" translatable="false">1</item>
 
     <!-- Main Activity -->
     <string name="search_title">Search</string>
@@ -14,7 +14,7 @@
     <string name="about">About</string>
     <string name="about_cebuano_dictionary">About Cebuano Dictionary</string>
     <string name="app_logo">App Logo</string>
-    
+
     <string name="main_entry">Main entry</string>
     <string name="status_icon">Status icon</string>
     <string name="entry_preview">Entry preview</string>
@@ -22,22 +22,22 @@
     <string name="reverse_lookup">Reverse lookup</string>
     <string name="derived_form">Derived form</string>
     <string name="cross_reference">Cross-reference</string>
-    
+
     <!-- Search Activity -->
     <string name="search_hint">Enter a word</string>
-    
+
     <!-- Test Activity -->
     <string name="title_activity_test">Test Activity</string>
     <string name="test_activity">Test Activity</string>
 
     <!-- Help Activity -->
     <string name="help">Help</string>
-    
+
     <!-- Show Entry Activity -->
     <string name="show_next_entry">Next Entry</string>
     <string name="show_previous_entry">Previous Entry</string>
     <string name="title_activity_show_entry">Show Entry</string>
-    
+
     <string name="can_swipe_to_move_to_next_entry">You can swipe right-to-left for the next entry</string>
     <string name="can_swipe_to_move_to_previous_entry">You can swipe left-to-right for the previous entry</string>
     <string name="reached_first_entry">You\'ve reached the first entry</string>
@@ -78,5 +78,5 @@
     <string name="measure_units">Measurement units</string>
     <string name="measure_units_summary">Selects the units used for measured values</string>
     <string name="measure_original">Original (U.S.)</string>
-    <string name="measure_metric">Metric</string>       
+    <string name="measure_metric">Metric</string>
 </resources>

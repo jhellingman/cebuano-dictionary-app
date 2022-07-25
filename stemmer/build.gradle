@@ -1,0 +1,21 @@
+plugins {
+    id 'java-library'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+//apply plugin: 'java'
+//
+//jar {
+//    baseName = 'stemmer'
+//    version =  '0.0.1'
+//}
+
+dependencies {
+//    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    testImplementation 'junit:junit:4.13.2'
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+}

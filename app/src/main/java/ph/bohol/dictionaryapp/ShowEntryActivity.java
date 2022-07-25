@@ -7,7 +7,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
@@ -86,8 +86,15 @@ public class ShowEntryActivity extends AppCompatActivity {
     private void showEntry() {
         DictionaryDatabase database = DictionaryDatabase.getInstance(this);
         try (Cursor cursor = database.getEntry(entryId)) {
-            String entry = cursor.getString(cursor.getColumnIndex(DictionaryDatabase.ENTRY_ENTRY));
-            String head = cursor.getString(cursor.getColumnIndex(DictionaryDatabase.ENTRY_HEAD));
+            int entryIndex = cursor.getColumnIndex(DictionaryDatabase.ENTRY_ENTRY);
+            int headIndex = cursor.getColumnIndex(DictionaryDatabase.ENTRY_HEAD);
+            if (entryIndex < 0 || headIndex < 0) {
+                setTitle("ERROR: no entry or head column found");
+                return;
+            }
+            String entry = cursor.getString(entryIndex);
+            String head = cursor.getString(headIndex);
+
             setTitle(head);
 
             String htmlEntry = transformEntry(entry);
@@ -152,51 +159,42 @@ public class ShowEntryActivity extends AppCompatActivity {
 
     @Override
     public final boolean onOptionsItemSelected(final MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                // This ID represents the Home or Up button. In the case of this
-                // activity, the Up button is shown. Use NavUtils to allow users
-                // to navigate up one level in the application structure. For
-                // more details, see the Navigation pattern on Android Design:
-                //
-                // http://developer.android.com/design/patterns/navigation.html#up-vs-back
-                //
-                // NavUtils.navigateUpFromSameTask(this);
-                finish();
-                return true;
-
-            case R.id.action_next:
-                if (!givenSwipeNextHint) {
-                    Toast.makeText(this, getResources().getString(R.string.can_swipe_to_move_to_next_entry),
-                            Toast.LENGTH_SHORT).show();
-                    givenSwipeNextHint = true;
-                }
-                moveToNextEntry();
-                break;
-
-            case R.id.action_previous:
-                if (!givenSwipePreviousHint) {
-                    Toast.makeText(this, getResources().getString(R.string.can_swipe_to_move_to_previous_entry),
-                            Toast.LENGTH_SHORT).show();
-                    givenSwipePreviousHint = true;
-                }
-                moveToPreviousEntry();
-                break;
-
-            case R.id.action_settings:
-                Intent i = new Intent(this, DictionaryPreferenceActivity.class);
-                startActivityForResult(i, RESULT_SETTINGS);
-                break;
-
-            case R.id.about:
-                AboutDialog about = new AboutDialog(this);
-                about.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                about.setTitle(R.string.about_cebuano_dictionary);
-                about.show();
-                break;
-
-            default:
-                break;
+        int itemId = item.getItemId();
+        
+        // If-else tree instead of switch http://tools.android.com/tips/non-constant-fields
+        if (itemId == android.R.id.home) {
+            // This ID represents the Home or Up button. In the case of this
+            // activity, the Up button is shown. Use NavUtils to allow users
+            // to navigate up one level in the application structure. For
+            // more details, see the Navigation pattern on Android Design:
+            //
+            // http://developer.android.com/design/patterns/navigation.html#up-vs-back
+            //
+            // NavUtils.navigateUpFromSameTask(this);
+            finish();
+            return true;
+        } else if (itemId == R.id.action_next) {
+            if (!givenSwipeNextHint) {
+                Toast.makeText(this, getResources().getString(R.string.can_swipe_to_move_to_next_entry),
+                        Toast.LENGTH_SHORT).show();
+                givenSwipeNextHint = true;
+            }
+            moveToNextEntry();
+        } else if (itemId == R.id.action_previous) {
+            if (!givenSwipePreviousHint) {
+                Toast.makeText(this, getResources().getString(R.string.can_swipe_to_move_to_previous_entry),
+                        Toast.LENGTH_SHORT).show();
+                givenSwipePreviousHint = true;
+            }
+            moveToPreviousEntry();
+        } else if (itemId == R.id.action_settings) {
+            Intent i = new Intent(this, DictionaryPreferenceActivity.class);
+            startActivityForResult(i, RESULT_SETTINGS);
+        } else if (itemId == R.id.about) {
+            AboutDialog about = new AboutDialog(this);
+            about.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            about.setTitle(R.string.about_cebuano_dictionary);
+            about.show();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -205,7 +203,7 @@ public class ShowEntryActivity extends AppCompatActivity {
         DictionaryDatabase database = DictionaryDatabase.getInstance(this);
         int newEntryId = database.getPreviousEntryId(entryId);
         if (newEntryId == entryId) {
-            Toast.makeText(this, getResources().getString(R.string.reached_first_entry), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.reached_first_entry), Toast.LENGTH_SHORT).show();
         }
         entryId = newEntryId;
         showEntry();
@@ -215,7 +213,7 @@ public class ShowEntryActivity extends AppCompatActivity {
         DictionaryDatabase database = DictionaryDatabase.getInstance(this);
         int newEntryId = database.getNextEntryId(entryId);
         if (newEntryId == entryId) {
-            Toast.makeText(this, getResources().getString(R.string.reached_last_entry), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.reached_last_entry), Toast.LENGTH_SHORT).show();
         }
         entryId = newEntryId;
         showEntry();
